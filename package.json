@@ -24,6 +24,7 @@
     "@iconify-json/unjs": "^1.2.3",
     "@tailwindcss/postcss": "^4.1.12",
     "@vitejs/plugin-vue": "^6.0.1",
+    "@vitejs/plugin-vue-jsx": "^5.1.1",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
     "less": "^4.4.1",

@@ -1,4 +1,5 @@
 {
+  "siteName": "个人博客后台管理系统",
   "router": {
     "dashboard": "看板",
     "level": {

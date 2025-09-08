@@ -23,6 +23,7 @@ export const routes = createRoutes([
   {
     path: "/login",
     component: () => import("@/views/login/index.vue"),
+    name: "Login",
     meta: {
       roles: [EPemission.visitor],
       title: "login",

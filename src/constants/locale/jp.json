@@ -1,4 +1,6 @@
 {
+  "siteName": "My Blog Admin",
+
   "router": {
     "dashboard": "ダッシュボード",
     "level": {

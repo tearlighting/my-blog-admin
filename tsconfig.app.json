@@ -13,11 +13,14 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "baseUrl": "./",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "moduleResolution": "bundler",
     "paths": {
       "@/*": ["src/*"],
       "*": ["types/*"]
     },
-    "types": ["unplugin-icons/types/vue3"]
+    "types": ["unplugin-icons/types/vue3", "vue"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "types/**/*.d.ts"]
 }

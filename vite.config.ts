@@ -3,10 +3,12 @@ import vue from "@vitejs/plugin-vue"
 import Icons from "unplugin-icons/vite"
 import IconsResolver from "unplugin-icons/resolver"
 import Components from "unplugin-vue-components/vite"
+import vueJsx from "@vitejs/plugin-vue-jsx"
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
+    vueJsx(),
     Components({
       resolvers: [
         // 自动识别 <i-xxx-yyy /> 为图标组件
