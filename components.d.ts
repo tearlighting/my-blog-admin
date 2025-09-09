@@ -23,6 +23,7 @@ declare module 'vue' {
     Permission: typeof import('./src/components/Permission/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Settings: typeof import('./src/components/Settings/index.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     Tag: typeof import('./src/components/TagViews/Tag.vue')['default']
     TagViews: typeof import('./src/components/TagViews/index.vue')['default']

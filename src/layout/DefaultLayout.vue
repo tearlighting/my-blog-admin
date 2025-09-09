@@ -6,6 +6,7 @@ import TagViews from "@/components/TagViews/index.vue"
 import { useRouteStore, useTagViewStore } from "@/store"
 import { usePageHostStore } from "@/store/pageHost"
 import { storeToRefs } from "pinia"
+import Settings from "@/components/Settings/index.vue"
 
 const { currentRoute } = useRouteStore()
 const { hostRef } = storeToRefs(usePageHostStore())
@@ -29,6 +30,7 @@ const { allCachedTags } = storeToRefs(useTagViewStore())
           <component :is="Component" :key="currentRoute.name" />
         </KeepAlive>
       </RouterView>
+      <Settings class="fixed top-1/2 right-0 -translate-y-1/2"></Settings>
     </div>
   </PanelContainer>
 </template>

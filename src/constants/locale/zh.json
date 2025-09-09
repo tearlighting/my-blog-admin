@@ -20,5 +20,36 @@
     "pastel": "马卡龙",
     "forest": "森林",
     "neon": "赛博朋克"
+  },
+  "layoutSettings": {
+    "navBar": "导航栏",
+    "menuSwitch": "菜单按钮",
+    "title": "标题",
+    "fullScreenSwitch": "全屏按钮",
+    "localeSwitch": "语言切换按钮",
+    "themeSwitch": "主题切换按钮",
+    "userAvatar": "用户头像",
+    "tagsView": "标签页"
+  },
+  "views": {
+    "login": {
+      "userName": {
+        "_": "用户名",
+        "errors": {
+          "required": "请输入用户名",
+          "maxLength": "用户名不能超过10个字符"
+        }
+      },
+      "password": {
+        "_": "密码",
+        "errors": {
+          "required": "请输入密码",
+          "maxLength": "密码不能超过10个字符"
+        }
+      },
+      "login": "登录",
+      "register": "注册",
+      "forgetPassword": "忘记密码"
+    }
   }
 }

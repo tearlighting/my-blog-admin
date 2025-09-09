@@ -14,5 +14,22 @@ export class TransformMiddleWare<I, R = I> {
     return result
   }
 }
+export class SyncTransformMiddleWare<I, R = I> {
+  private _stack: Array<(input: any) => any> = []
+
+  use<T>(fn: (input: R) => T) {
+    this._stack.push(fn)
+    return this as unknown as SyncTransformMiddleWare<I, T>
+  }
+
+  run(input: I): R {
+    let result: any = input
+    for (const fn of this._stack) {
+      result = fn(result)
+    }
+    return result
+  }
+}
 
 export const createTransformMiddleWare = <I, R = I>() => new TransformMiddleWare<I, R>()
+export const createSyncTransformMiddleWare = <I, R = I>() => new SyncTransformMiddleWare<I, R>()

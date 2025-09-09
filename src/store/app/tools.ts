@@ -28,13 +28,12 @@ export const getDeviceType = (size: EAppSize) => {
 
 export class Settings {
   showNavBar: boolean = true
-
   showMenuSwitch: boolean = true
   showTitle: boolean = true
   showFullScreenSwitch: boolean = true
   showLocaleSwitch: boolean = true
   showThemeSwitch: boolean = true
   showUserAvatar: boolean = true
-
   showTagsView: boolean = true
+  showSettings: boolean = true
 }

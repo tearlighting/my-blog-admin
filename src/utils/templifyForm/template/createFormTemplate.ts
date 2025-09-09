@@ -1,14 +1,22 @@
-import type { ICreateFormTemplateProps, IFormTemplateItem, IOptionItem, IRender } from "templifyForm"
+import type { I18nResolveCxt, ICreateFormTemplateProps, IFormTemplateItem, IRender } from "templifyForm"
 import { ETemplateType } from "../constants"
 
-export function createFormTemplate<TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>>(payload: ICreateFormTemplateProps<TProp, TTypes>): IFormTemplateItem<TProp>[] {
-  const { props, labels, types, options, readonlys, errors, renders, formItemClassNames, formItemContentClassNames, formItemLabelClassNames } = normalizeParams(payload)
-  return props.map((prop, index) => {
-    const label = labels[index]
+import { normalizeFormTemlatePayloads } from "../utils/normalizeFormTemlatePayloads"
+
+export function createFormTemplate<TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>, TResolveCxt extends any = any>(
+  payload: ICreateFormTemplateProps<TProp, TTypes, TResolveCxt>
+) {
+  const { props, labels, types, options, readonlys, errors, renders, formItemClassNames, formItemContentClassNames, formItemLabelClassNames } = normalizeFormTemlatePayloads<
+    TProp,
+    TTypes,
+    TResolveCxt
+  >(payload)
+  return props.map((prop) => {
+    const label = labels[prop]
     const type: ETemplateType = types[prop] ?? ETemplateType.input
     const readonly: boolean = readonlys[prop] ?? false
-    const option: IOptionItem[] = options[prop as keyof typeof options] ?? []
-    const error: string = errors[prop] ?? ""
+    const option = options[prop as keyof typeof options] || null
+    const error = errors[prop]
     const formItemClassName = formItemClassNames[prop] ?? ""
     const formItemContentClassName = formItemContentClassNames[prop] ?? ""
     const formItemLabelClassName = formItemLabelClassNames[prop] ?? ""
@@ -22,18 +30,21 @@ export function createFormTemplate<TProp extends string, TTypes extends Partial<
       formItemClassName,
       formItemContentClassName,
       formItemLabelClassName,
-      render: undefined as unknown as IRender,
+      render: undefined as unknown as IRender<TProp>,
     }
     if (renders[prop]) {
       res.render = function (...args: any[]) {
         return renders[prop]!(res as any, ...args)
       }
     }
-    return res
+    return res as any as IFormTemplateItem<TProp, TResolveCxt>
   })
 }
-const normalizeParams = <TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>>(params: ICreateFormTemplateProps<TProp, TTypes>) => {
-  const { props, labels, types = {}, options = {}, readonlys = {}, errors = {}, renders = {}, formItemClassNames = {}, formItemContentClassNames = {}, formItemLabelClassNames = {} } = params
-  if (props.length !== labels.length) throw new Error("props and labels length must be equal")
-  return { props, labels, types, options, readonlys, errors, renders, formItemClassNames, formItemContentClassNames, formItemLabelClassNames } as Required<ICreateFormTemplateProps<TProp, TTypes>>
+
+export const generateCreateFormTemplate = <TResolveCxt>() => {
+  return function <TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>>(payload: ICreateFormTemplateProps<TProp, TTypes, TResolveCxt>) {
+    return createFormTemplate<TProp, TTypes, TResolveCxt>(payload)
+  }
 }
+
+export const createFormTemplateResolverI18n = generateCreateFormTemplate<I18nResolveCxt>()

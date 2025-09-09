@@ -1,4 +1,4 @@
-import type { ILanguageManager, NestedKeys } from "language"
+import type { ILanguageManager, TI18nKey } from "language"
 import { LanguageCore } from "./core/LanguageCore"
 
 export class LanguageManagerGlue<TKey extends string = string, TMessage extends Record<string, any> = {}> {
@@ -10,9 +10,8 @@ export class LanguageManagerGlue<TKey extends string = string, TMessage extends 
   get managerIns() {
     return this._managerIns
   }
-  t(path: NestedKeys<TMessage>) {
-    //@ts-ignore
-    return this._managerIns.t(path as unknown as string)
+  t(path: TI18nKey) {
+    return this._managerIns.t(path)
   }
   setLocale(locale: TKey): void {
     this._coreIns.setLocale(locale)

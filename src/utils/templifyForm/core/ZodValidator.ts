@@ -1,8 +1,8 @@
-import { ZodObject, ZodType, z } from "zod"
+import { ZodObject, z } from "zod"
 import { ETemplateTopic } from "../constants/templateTopic"
 import type { IPublisher, ISubscriber } from "subpubPattern"
 import { Blocker, Publisher, Subscriber } from "@/utils/subPubpattern"
-export class ZodValidator<TProp extends string, TScheme extends ZodObject<Record<TProp, ZodType>>> {
+export class ZodValidator<TScheme extends ZodObject, TProp extends string = keyof z.infer<TScheme> & string> {
   constructor(private readonly _zodSchema: TScheme, private _formData: z.infer<TScheme>, private _publisher: IPublisher<ETemplateTopic>, private _subscriber: ISubscriber<ETemplateTopic>) {}
   setValue(key: TProp, value: any) {
     this._formData[key as unknown as keyof typeof this._formData] = value
@@ -49,9 +49,9 @@ export class ZodValidator<TProp extends string, TScheme extends ZodObject<Record
   //   }
 }
 
-export const createZodValidator = <TProp extends string, TScheme extends ZodObject<Record<TProp, ZodType>>>(zodSchema: TScheme, formData: z.infer<TScheme>) => {
+export const createZodValidator = <TScheme extends ZodObject, TForm extends z.infer<TScheme>>(zodSchema: TScheme, formData: TForm) => {
   const blocker = new Blocker()
   const publisher = new Publisher<ETemplateTopic>(blocker)
   const subscriber = new Subscriber<ETemplateTopic>(blocker)
-  return new ZodValidator<TProp, TScheme>(zodSchema, formData, publisher, subscriber)
+  return new ZodValidator(zodSchema, formData, publisher, subscriber)
 }
