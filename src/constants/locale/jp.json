@@ -34,9 +34,21 @@
   },
   "views": {
     "login": {
-      "userName": "用户名",
-      "password": "密码",
-      "login": "登录",
+      "userName": {
+        "_": "userName",
+        "errors": {
+          "required": "请输入用户名",
+          "maxLength": "用户名不能超过10个字符"
+        }
+      },
+      "password": {
+        "_": "password",
+        "errors": {
+          "required": "请输入密码",
+          "maxLength": "密码不能超过10个字符"
+        }
+      },
+      "login": "login",
       "register": "注册",
       "forgetPassword": "忘记密码"
     }

@@ -1,42 +1,19 @@
-import type { ICreateFormTemplateProps, INormalizedCreateFormTemplateProps, LabelInput } from "templifyForm"
-import {
-  createFunctionResolvor,
-  createFunctionResolvorRestable,
-  createStaticResolvor,
-  createStaticResolvorRestable,
-  isResolvableValueRestable,
-  ResolvableValue,
-  type IResolvableValueRestable,
-} from "../core"
 import { ETemplateType } from "../constants"
 import { createSyncTransformMiddleWare } from "../../middleware"
-
-export const wrapToResolvable = <T = any>(value: LabelInput): ResolvableValue<T> => {
-  if (value instanceof ResolvableValue) return value
-  if (typeof value === "function") return createFunctionResolvor(value)
-  return createStaticResolvor(value)
-}
-
-export const wrapToRestableResolvable = <T extends LabelInput>(value: T): ResolvableValue<T> & IResolvableValueRestable => {
-  if (value instanceof ResolvableValue) {
-    if (isResolvableValueRestable(value)) return value
-    throw new Error("value is not a restable resolvable value")
-  }
-  if (typeof value === "function") return createFunctionResolvorRestable(value)
-  return createStaticResolvorRestable(value)
-}
+import { toResolvable, toResolvableRestable } from "./index"
+import type { ICreateFormTemplateProps, INormalizedCreateFormTemplateProps } from "templifyFormNew"
 
 const labelsTransform = (payload: ICreateFormTemplateProps<string, any, any>) => {
-  const { labels } = payload
-  for (let key in labels) {
-    labels[key] = wrapToResolvable(labels[key])
+  const { labels, props } = payload
+  for (let prop of props) {
+    labels[prop] = toResolvable(labels[prop])
   }
   return payload
 }
 const errorsTransform = (payload: ICreateFormTemplateProps<string, any, any>) => {
   const { errors, props } = payload
   for (let prop of props) {
-    errors![prop] = wrapToRestableResolvable(errors![prop] ?? "")
+    errors![prop] = toResolvableRestable(errors![prop] ?? "")
   }
   return payload
 }
@@ -47,7 +24,7 @@ const optionsTransform = (payload: ICreateFormTemplateProps<string, any, any>) =
     if (types[prop] === ETemplateType.select) {
       options![prop] = (options![prop] || []).map((item) => {
         return {
-          label: wrapToResolvable(item.label),
+          label: toResolvable(item.label),
           value: item.value,
         }
       })
@@ -62,7 +39,6 @@ export const normalizeFormTemlatePayloads = <TProp extends string, TTypes extend
 ) => {
   const { props, labels, types = {}, options = {}, readonlys = {}, errors = {}, renders = {}, formItemClassNames = {}, formItemContentClassNames = {}, formItemLabelClassNames = {} } = params
   if (props.length !== Object.keys(labels).length) throw new Error("props and labels length must be equal")
-
   const res = {
     props,
     labels,
@@ -75,5 +51,5 @@ export const normalizeFormTemlatePayloads = <TProp extends string, TTypes extend
     formItemContentClassNames,
     formItemLabelClassNames,
   }
-  return transformer.run(res) as INormalizedCreateFormTemplateProps<TProp, TTypes, TResolveCxt>
+  return transformer.run(res) as unknown as INormalizedCreateFormTemplateProps<TProp, TTypes, TResolveCxt>
 }

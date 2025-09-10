@@ -1,9 +1,9 @@
-import { createUseTemplifyFormWithI18nResolvor } from "@/hooks/useTemplifyForm"
-import { stringEnumTransform, i18nKey, createZodErrorMap } from "@/utils"
+import { createUseTemplifyFormWithI18nResolvor } from "@/hooks/useTemplifyFormNew"
+import { stringEnumTransform, createZodErrorMap } from "@/utils/templifyFormNew"
 import { ELoginForm } from "../constants"
 import { ElFormItem, ElInput } from "element-plus"
 import z from "zod"
-import type { ILanguageManager, TI18nKey } from "language"
+import type { TI18nKey } from "language"
 
 export const useForm = (() => {
   const { props } = stringEnumTransform(ELoginForm)
@@ -23,10 +23,6 @@ export const useForm = (() => {
         userName: z.string().min(1, errorMap.userName.min).max(20, errorMap.userName.max),
         password: z.string().min(1, errorMap.password.min).max(20, errorMap.password.max),
       },
-      defaultValues: {
-        userName: "admin",
-        password: "123",
-      },
     },
     formTemplatePayload: {
       labels: {
@@ -39,7 +35,7 @@ export const useForm = (() => {
         password: "w-20 h-full flex justify-center items-center text-muted",
       },
       renders: {
-        password: (_, item: typeof _, formData: Record<(typeof props)[number], any>, t: ILanguageManager["t"]) => {
+        password: (_, item, formData, t) => {
           return (
             <ElFormItem
               prop={item.prop}
@@ -55,8 +51,12 @@ export const useForm = (() => {
         },
       },
       errors: {
-        userName: i18nKey(),
-        password: i18nKey(),
+        password: ({ t }, value) => {
+          return value && t(value as TI18nKey)
+        },
+        userName: ({ t }, value) => {
+          return value && t(value as TI18nKey)
+        },
       },
     },
   })

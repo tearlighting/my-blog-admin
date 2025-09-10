@@ -1,9 +1,9 @@
-import type { I18nResolveCxt, ICreateFormTemplateProps, IFormTemplateItem, IRender } from "templifyForm"
+import type { I18nResolveCxt, ICreateFormTemplateProps, IFormTemplateItem, IRender } from "templifyFormNew"
 import { ETemplateType } from "../constants"
 
 import { normalizeFormTemlatePayloads } from "../utils/normalizeFormTemlatePayloads"
 
-export function createFormTemplate<TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>, TResolveCxt extends any = any>(
+export function createFormTemplate<TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>, TResolveCxt extends any = any, TFormData extends any = any>(
   payload: ICreateFormTemplateProps<TProp, TTypes, TResolveCxt>
 ) {
   const { props, labels, types, options, readonlys, errors, renders, formItemClassNames, formItemContentClassNames, formItemLabelClassNames } = normalizeFormTemlatePayloads<
@@ -15,7 +15,7 @@ export function createFormTemplate<TProp extends string, TTypes extends Partial<
     const label = labels[prop]
     const type: ETemplateType = types[prop] ?? ETemplateType.input
     const readonly: boolean = readonlys[prop] ?? false
-    const option = options[prop as keyof typeof options] || null
+    const option = type === ETemplateType.select ? options[prop as keyof typeof options] || null : null
     const error = errors[prop]
     const formItemClassName = formItemClassNames[prop] ?? ""
     const formItemContentClassName = formItemContentClassNames[prop] ?? ""
@@ -25,19 +25,19 @@ export function createFormTemplate<TProp extends string, TTypes extends Partial<
       label,
       type,
       readonly,
-      option,
+      ...(option ? { option } : {}),
       error,
       formItemClassName,
       formItemContentClassName,
       formItemLabelClassName,
-      render: undefined as unknown as IRender<TProp, TResolveCxt>,
+      render: undefined as unknown as IRender<TProp, TResolveCxt, TFormData>,
     }
     if (renders[prop]) {
       res.render = function (...args: any[]) {
-        return renders[prop]!(res as any, ...args)
+        return (renders[prop] as any)!(res, ...args)
       }
     }
-    return res as any as IFormTemplateItem<TProp, TResolveCxt>
+    return res as any as IFormTemplateItem<TProp, TResolveCxt, TFormData>
   })
 }
 

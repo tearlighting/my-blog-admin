@@ -1,31 +1,17 @@
-import type { ETemplateType } from "@/utils/templifyForm/constants/templateType"
+import type { ResolvableValue } from "@/utils/templifyFormNew/core"
 import type { ZodObject, ZodType, z } from "zod"
-import type { createFormTemplate, IResolvableValueRestable, ResolvableValue } from "@/utils"
-import type { VNode } from "vue"
 import { ILanguageManager } from "language"
 
+export type LabelInput<T = any> = string | ((ctx: T, val: string) => string) | ResolvableValue<T>
+export type LabelInputRestable<T = any> = string | ((ctx: T, val: string) => string) | (ResolvableValue<T> & IResolvableValueRestable)
 /**
- * 通过函数获取label,可以动态注入一些数据，比如t,解耦
+ * i18n要注入t
  */
-export type LabelInput<T = any> = string | ((cxt: T) => string) | ResolvableValue<T>
-
-export type LabelInputRestable<T = any> = string | ((cxt: T) => string) | (ResolvableValue<T> & IResolvableValueRestable)
-/**
- * 下拉框配置
- */
-export interface IOptionItem {
-  label: LabelInput
-  value: string
+export interface I18nResolveCxt {
+  t: ILanguageManager["t"]
 }
 
-export interface INomalizedOptionItem<T> {
-  label: ResolvableValue<T>
-  value: string
-}
-/**
- * 当组件太复杂，通用组件满足不了时，可以手动配置render
- */
-export type IRender<TProp extends string, TResolveCxt> = (item: IFormTemplateItem<TProp, TResolveCxt>, ...args: any[]) => VNode
+export interface ITemplifyForm {}
 /**
  * 初始化参数
  */
@@ -41,37 +27,69 @@ export type ICreateFormTemplateProps<TProp extends string, TTypes extends Partia
    * default error  for each prop
    */
   errors?: Partial<Record<TProp, LabelInputRestable<TResolveCxt>>>
-  renders?: Partial<Record<TProp, IRender<TProp, TResolveCxt>>>
+  renders?: Partial<Record<TProp, IRender<TProp, TResolveCxt, Record<TProp, any>>>>
   formItemClassNames?: Partial<Record<TProp, string>>
   formItemLabelClassNames?: Partial<Record<TProp, string>>
   formItemContentClassNames?: Partial<Record<TProp, string>>
 }
-
+/**
+ * 归一化之后的参数
+ */
 export type INormalizedCreateFormTemplateProps<TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>, TResolveCxt> = Omit<
   Required<ICreateFormTemplateProps<TProp, TTypes, TResolveCxt>>,
   "labels" | "options" | "errors"
 > & {
   labels: Record<TProp, ResolvableValue<TResolveCxt>>
-  errors: Record<TProp, ResolvableValue<TResolveCxt> & IResolvableValueRestable>
+  errors: Record<TProp, ResolvableValue<TResolveCxt>>
   options: Partial<{
     [key in TProp as TTypes[key] extends ETemplateType.select ? key : never]: INomalizedOptionItem<TResolveCxt>[]
   }>
 }
 
 /**
+ * 下拉框配置
+ */
+export interface IOptionItem {
+  label: LabelInput
+  value: string
+}
+
+export interface INomalizedOptionItem<T> {
+  label: ResolvableValue<T>
+  value: string
+}
+
+/**
+ * 当组件太复杂，通用组件满足不了时，可以手动配置render
+ */
+export type IRender<TProp extends string, TResolveCxt, TFormData> = (
+  itemRaw: IFormTemplateItem<TProp, TResolveCxt, TFormData>,
+  item: IFormTemplateItem<TProp, TResolveCxt, TFormData>,
+  formData: TFormData,
+  t: ILanguageManager["t"]
+) => VNode
+
+/**
  * formTemplate item
  */
-export type IFormTemplateItem<TProp extends string, TResolveCxt> = {
+export type IFormTemplateItem<TProp extends string, TResolveCxt, TFormData> = {
   prop: TProp
   label: ResolvableValue<TResolveCxt>
   type: ETemplateType
   option: INomalizedOptionItem<T>[]
   readonly?: boolean
   error: ResolvableValue<TResolveCxt> & IResolvableValueRestable
-  render?: IRender
+  render?: IRender<TProp, TResolveCxt, TFormData>
   formItemClassName?: string
   formItemLabelClassName?: string
   formItemContentClassName?: string
+}
+/**
+ *hooks参数
+ */
+export interface IUseFormParam<TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>, TShape extends Record<TProp, ZodType>, TResolveCxt> {
+  formTemplatePayload: ICreateFormTemplateProps<TProp, TTypes, TResolveCxt>
+  formDataPayload: Omit<ICreateFormDataProps<TProp, TShape>, "props">
 }
 /**
  * 推form data type
@@ -88,18 +106,8 @@ export type ICreateFormDataProps<TProp extends string, TShape extends Record<TPr
   shapes: TShape
   schemaRelations?: (payload: ZodObject) => ZodObject
 }
-/**
- *hooks参数
- */
-export interface IUseFormParam<TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>, TShape extends Record<TProp, ZodType>, TResolveCxt> {
-  formTemplatePayload: ICreateFormTemplateProps<TProp, TTypes, TResolveCxt>
-  formDataPayload: Omit<ICreateFormDataProps<TProp, TShape>, "props">
-}
-/**
- * i18n要注入t
- */
-export interface I18nResolveCxt {
-  t: ILanguageManager["t"]
-}
 
-export type TErrorMap<TKey extends string, TValue extends string = string> = Partial<Record<TKey, Partial<Record<keyof ZodString, TValue>>>>
+export interface IResolvableValueRestable {
+  rest(): void
+  show(): void
+}

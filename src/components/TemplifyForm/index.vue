@@ -17,12 +17,12 @@ const { t } = useLanguage()
     <ElForm>
       <template v-for="item of props.template" :key="item.prop">
         <template v-if="item.render">
-          <component :is="item.render(formData, t)"></component>
+          <component :is="item.render(item, formData, t)"></component>
         </template>
         <template v-else>
-          <ElFormItem :prop="item.prop" :error="item.error" :class="item.formItemClassName">
+          <ElFormItem :prop="item.prop" :error="item.error.resolve({ t })" :class="item.formItemClassName">
             <template v-slot:label>
-              <span :class="item.formItemLabelClassName">{{ item.label.resolve(t) }}</span>
+              <span :class="item.formItemLabelClassName">{{ item.label.resolve({ t }) }}</span>
             </template>
             <ElInput size="large" v-model="formData[item.prop]" :class="item.formItemContentClassName"> </ElInput>
           </ElFormItem>

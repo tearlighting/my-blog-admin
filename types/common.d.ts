@@ -47,3 +47,5 @@ type EnumValue<T extends Record<string, string>> = T[keyof T]
 
 type PromiseValue<T extends Promise<any>> = T extends Promise<infer R> ? R : never
 type PromiseType<T> = T extends Promise<infer R> ? R : T
+
+type Nullable<T> = T | null
