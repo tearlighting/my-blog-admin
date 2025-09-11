@@ -1,8 +1,10 @@
-import { createFormData, createFormTemplate, createZodValidator, type ETemplateType } from "@/utils/templifyFormNew"
+import { Blocker, Publisher, Subscriber } from "@/utils"
+import { createFormData, createFormTemplate, createZodValidator, ZodValidator, type ETemplateType } from "@/utils/templifyFormNew"
+import type { IPublisher, ISubscriber } from "subpubPattern"
 
-import type { IUseFormParam, I18nResolveCxt, InferShape } from "templifyFormNew"
+import type { IUseFormParam, I18nResolveCxt, InferShape, IFormTemplateItem } from "templifyFormNew"
 import { nextTick, onUnmounted, reactive, ref, watch } from "vue"
-import type { ZodType } from "zod"
+import { readonly, type z, type ZodObject, type ZodType } from "zod"
 
 export function useTemplifyForm<TProp extends string, TTypes extends Partial<Record<TProp, ETemplateType>>, TShape extends Record<TProp, ZodType>, TResolveCxt>({
   formDataPayload,
@@ -29,10 +31,7 @@ export function useTemplifyForm<TProp extends string, TTypes extends Partial<Rec
     for (let prop in formData) {
       watch(
         () => formData[prop as keyof typeof formData],
-        () => {
-          !isProgrammaticChangeFormData && validateField(prop as TInferKey)
-          console.log("auto validate")
-        }
+        () => !isProgrammaticChangeFormData && validateField(prop as TInferKey)
       )
     }
   }
@@ -67,10 +66,9 @@ export function useTemplifyForm<TProp extends string, TTypes extends Partial<Rec
     const { valid, error } = formdataValidator.validateAll()
     lastFormValid.value = valid
     errors.value = error ?? {}
-    console.log("set")
+
     nextTick(() => {
       isProgrammaticChangeFormData = false
-      console.log("over")
     })
   }
   /**
@@ -78,23 +76,17 @@ export function useTemplifyForm<TProp extends string, TTypes extends Partial<Rec
    * 添加i18nkey的hack,其实我感觉很丑，但是这种只改key的，我确实没有好的方法
    */
   const unsubscribe = formdataValidator.subscribe(({ valid, error }, prop) => {
-    console.log("publish")
-
     error = error ?? ({} as any)
     //如果是单行校验，就只更新单行的error
     if (prop) {
       const item = formTemplate.find((item) => item.prop === prop)!
       item.error.show()
       item?.error?.setValue(error![prop as TInferKey] ?? "")
-
-      // hackI18nKeyWithNewObj(item, "error", error![item.prop as TInferKey])
     } else {
       //如果是全部校验，就更新全部的error
-      if (valid) {
-        for (let item of formTemplate) {
-          item?.error?.show()
-          item?.error?.setValue(error![prop as TInferKey] ?? "")
-        }
+      for (let item of formTemplate) {
+        item?.error?.show()
+        item?.error?.setValue(error![prop as TInferKey] ?? "")
       }
     }
     lastFormValid.value = valid
@@ -112,6 +104,107 @@ export function useTemplifyForm<TProp extends string, TTypes extends Partial<Rec
     isValid: lastFormValid,
     validateAll,
     errors,
+  }
+}
+
+enum EFormChange {
+  formDataChange = "formDataChange",
+}
+class FormStore<
+  TScheme extends ZodObject,
+  TResolveCxt extends any,
+  TFormData extends z.infer<TScheme> = z.infer<TScheme>,
+  TKey extends string & keyof z.infer<TScheme> = string & keyof z.infer<TScheme>,
+  TFormTemplate extends IFormTemplateItem<TKey, TResolveCxt, TFormData> = IFormTemplateItem<TKey, TResolveCxt, TFormData>
+> {
+  private _isValid = false
+  private _errors: Partial<Record<TKey, string>> = {}
+  private _subscriber: ISubscriber<EFormChange>
+  private _publisher: IPublisher<EFormChange>
+  private _unsubscribeValidator?: () => void
+
+  constructor(private _formTemplate: TFormTemplate[], private _formData: TFormData, private _validator: ZodValidator<TScheme>) {
+    const blocker = new Blocker<EFormChange>()
+    this._publisher = new Publisher(blocker)
+    this._subscriber = new Subscriber(blocker)
+    this.init()
+  }
+
+  private setupValidation() {
+    // 订阅 validator，更新 errors/valid
+    return this._validator.subscribe(({ valid, error }, prop) => {
+      const nonNullErrors: Partial<Record<TKey, string>> = error ?? {}
+      if (prop) {
+        // 单行更新
+        const item = this._formTemplate.find((x) => x.prop === prop)
+        if (!item) return
+        item.error.show()
+        item.error.setValue(nonNullErrors[prop] ?? "")
+      } else {
+        // 全量更新
+        for (const item of this._formTemplate) {
+          item.error.show()
+          item.error.setValue(nonNullErrors[item.prop] ?? "")
+        }
+      }
+      this._isValid = valid
+      this._errors = nonNullErrors
+      this.publish()
+    })
+  }
+  private init() {
+    this.initValidation()
+    this._unsubscribeValidator = this.setupValidation()
+  }
+  private initValidation() {
+    const { valid, error } = this._validator.validateAll()
+    this._isValid = valid
+    this._errors = error ?? {}
+  }
+
+  validateField(prop: TKey) {
+    this._validator.runValidation(prop)
+  }
+
+  validateAll() {
+    this._validator.runValidation()
+  }
+  setError(key: TKey, error: string) {
+    const item = this._formTemplate.find((item) => item.prop === key)
+    if (!item) return
+    this._errors[key] = error
+    item.error.show()
+    item.error.setValue(error)
+    this.publish()
+  }
+  private publish() {
+    this._publisher.publish(EFormChange.formDataChange, this.getSnapshot())
+  }
+
+  subscribe(callback: ({}: { isValid: boolean; error: Partial<Record<TKey, string>>; formData: TFormData; formTemplate: TFormTemplate[] }) => void) {
+    const unsubscribe = this._subscriber.subscribe(EFormChange.formDataChange, callback)
+    return () => {
+      unsubscribe()
+      this._unsubscribeValidator?.()
+    }
+  }
+  reset(data?: Partial<TFormData>) {
+    const defaultValues = data ?? {}
+    for (const key in this._formData) {
+      this._formData[key as keyof TFormData] = defaultValues[key as keyof typeof defaultValues] ?? null
+    }
+    this.initValidation()
+    this.publish()
+  }
+  getSnapshot() {
+    return Object.freeze({
+      isValid: this._isValid,
+      errors: { ...this._errors },
+      formData: { ...this._formData },
+      formTemplate: this._formTemplate.map((item) => ({
+        ...item,
+      })),
+    } as const)
   }
 }
 
