@@ -40,8 +40,6 @@ export class ZodValidator<TScheme extends ZodObject, TProp extends string = keyo
   }
   runValidation(prop?: TProp) {
     const res = this.validateAll()
-    console.log("???")
-
     this.publish(res, prop)
   }
   //   validate(prop: TProp) {

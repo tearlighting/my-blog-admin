@@ -1,6 +1,7 @@
 import type { ResolvableValue } from "@/utils/templifyFormNew/core"
 import type { ZodObject, ZodType, z } from "zod"
 import { ILanguageManager } from "language"
+import type { ETemplateType } from "@/utils/templifyForm/constants/templateType"
 
 export type LabelInput<T = any> = string | ((ctx: T, val: string) => string) | ResolvableValue<T>
 export type LabelInputRestable<T = any> = string | ((ctx: T, val: string) => string) | (ResolvableValue<T> & IResolvableValueRestable)

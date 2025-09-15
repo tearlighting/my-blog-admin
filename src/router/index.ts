@@ -12,7 +12,7 @@ export const routes = createRoutes([
   {
     path: "/",
     redirect: {
-      name: "Dashboard",
+      name: "Login",
     },
     name: "Home",
     meta: {

@@ -26,15 +26,15 @@ export class LanguageCore<TKey extends string = never, TMessage extends Record<s
     return this._languageMessages
   }
 
-  t(path: string) {
-    const keys = path.split(".")
-    let obj: any = this.messages
-    for (const k of keys) {
-      if (obj == null) return path
-      obj = obj[k]
-    }
-    return obj ?? path
-  }
+  //   t(path: string) {
+  //     const keys = path.split(".")
+  //     let obj: any = this.messages
+  //     for (const k of keys) {
+  //       if (obj == null) return path
+  //       obj = obj[k]
+  //     }
+  //     return obj ?? path
+  //   }
 
   get locales() {
     return Object.entries(this._labels).map(([value, label]) => ({ value, label })) as Array<{ value: TKey; label: string }>
