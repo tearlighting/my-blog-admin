@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@iconify/vue": "^5.0.0",
+    "axios": "^1.12.2",
     "clsx": "^2.1.1",
     "element-plus": "^2.11.1",
     "pinia": "^3.0.3",
@@ -23,6 +24,7 @@
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/unjs": "^1.2.3",
     "@tailwindcss/postcss": "^4.1.12",
+    "@types/node": "^24.5.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitejs/plugin-vue-jsx": "^5.1.1",
     "@vue/tsconfig": "^0.7.0",

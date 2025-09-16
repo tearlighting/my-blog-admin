@@ -16,12 +16,16 @@ export const useForm = (() => {
       max: "views.login.userName.errors.maxLength",
       min: "views.login.userName.errors.required",
     },
+    code: {
+      required: "views.login.code.errors.required",
+    },
   })
   return createUseTemplifyFormWithI18nResolvor({
     formDataPayload: {
       shapes: {
         userName: z.string().min(1, errorMap.userName.min).max(20, errorMap.userName.max),
         password: z.string().min(1, errorMap.password.min).max(20, errorMap.password.max),
+        code: z.string().length(4, errorMap.code.required),
       },
       defaultValues: {
         userName: "admin",
@@ -32,6 +36,7 @@ export const useForm = (() => {
       labels: {
         userName: ({ t }) => t("views.login.userName"),
         password: ({ t }) => t("views.login.password"),
+        code: ({ t }) => t("views.login.code"),
       },
       props,
       formItemLabelClassNames: {

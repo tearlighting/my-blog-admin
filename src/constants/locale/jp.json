@@ -48,6 +48,12 @@
           "maxLength": "密码不能超过10个字符"
         }
       },
+      "code": {
+        "_": "验证码",
+        "errors": {
+          "required": "请输入4位验证码"
+        }
+      },
       "login": "login",
       "register": "注册",
       "forgetPassword": "忘记密码"
