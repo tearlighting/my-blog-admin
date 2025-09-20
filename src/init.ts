@@ -1,7 +1,8 @@
 import { watch } from "vue"
 import { useRouteStoreHook, useTagViewStoreHook, themeManager, useUserStoreHook, useAppStoreHook, useMenuStoreHook, menuManager } from "./store"
 import { setupRouteGuard } from "./router/behavior"
-import { EDeviceType } from "./constants"
+import { EDeviceType, ELoginStatus, EPemission } from "./constants"
+import { whoAmI } from "./api"
 
 export interface IAllStoreProps {
   userStore: ReturnType<typeof useUserStoreHook>
@@ -49,7 +50,29 @@ function changeMenuType<T extends IAllStoreProps>({ appStore, menuStore }: T) {
   )
 }
 
-function initApp() {
+function autoLogin<T extends IAllStoreProps>({ userStore }: T) {
+  userStore.setUserInfo({
+    role: EPemission.visitor,
+    loginStatus: ELoginStatus.logining,
+  })
+  whoAmI()
+    .then((res) => {
+      if (res.msg) throw new Error(res.msg)
+      userStore.setUserInfo({
+        role: res.data.role,
+        name: res.data.name,
+        loginId: res.data.loginId,
+        loginStatus: ELoginStatus.logined,
+      })
+    })
+    .catch((err) => {
+      userStore.setUserInfo({
+        role: EPemission.visitor,
+        loginStatus: ELoginStatus.unlogin,
+      })
+    })
+}
+export function initApp() {
   const stores: IAllStoreProps = {
     userStore: useUserStoreHook(),
     routeStore: useRouteStoreHook(),
@@ -62,5 +85,5 @@ function initApp() {
   setupTheme(stores)
   setupRouteGuard(stores)
   changeMenuType(stores)
+  autoLogin(stores)
 }
-initApp()

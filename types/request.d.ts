@@ -2,10 +2,10 @@ type IResponse<T> =
   | {
       data: T
       code: number
-      msg: null
+      msg: never
     }
   | {
-      data: null
+      data: never
       code: number
       msg: string
     }

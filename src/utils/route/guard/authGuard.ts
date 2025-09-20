@@ -1,4 +1,4 @@
-import { ELoginStatus } from "@/constants"
+import { ELoginStatus, EPemission } from "@/constants"
 import { useUserStoreHook } from "@/store/user"
 import type { IRouteGuarder } from "router"
 import type { RouteLocationRaw } from "vue-router"
@@ -6,14 +6,17 @@ import type { RouteLocationRaw } from "vue-router"
 export const createAuthGuard = <T extends ReturnType<typeof useUserStoreHook>, R extends RouteLocationRaw>(userStore: T, redirect: R) => {
   const authGuard: IRouteGuarder = async ([to, _, routerNext], next) => {
     const { roles } = to.meta
+    // console.log(roles, userStore.userInfo)
 
-    if (userStore.hasPemission(roles)) {
+    if (userStore.hasPemission(roles as EPemission[])) {
       next()
       return
     }
 
     // 未登录
     if (userStore.userInfo.loginStatus === ELoginStatus.unlogin) {
+      console.log("未登录")
+
       routerNext({ name: "login" })
       return
     }
