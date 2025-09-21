@@ -25,7 +25,6 @@ function loginHandler() {
 		})
 		router.push({
 			name: "home",
-			replace: true
 		})
 	}).catch(err => {
 		// console.log(err)

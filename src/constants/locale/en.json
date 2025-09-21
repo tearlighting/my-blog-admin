@@ -14,7 +14,7 @@
       }
     },
     "home": {
-      "_": "首页"
+      "_": "home"
     }
   },
   "theme": {
@@ -59,6 +59,13 @@
       "login": "login",
       "register": "注册",
       "forgetPassword": "忘记密码"
+    },
+    "home": {
+      "table": {
+        "bigImg": "大图",
+        "description": "描述",
+        "title": "标题"
+      }
     }
   }
 }

@@ -9,4 +9,9 @@ export const enum EIcons {
   Theme = "unjs:theme-colors",
   Close = "akar-icons:x-small",
   Setting = "ep:setting",
+  Edit = "cuida:edit-outline",
+  Delete = "material-symbols:delete-outline",
+  Plus = "ic:baseline-plus",
+  Download = "material-symbols:download",
+  ZoomIn = "fad:zoomin",
 }

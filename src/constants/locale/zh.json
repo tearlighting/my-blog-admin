@@ -59,6 +59,13 @@
       "login": "登录",
       "register": "注册",
       "forgetPassword": "忘记密码"
+    },
+    "home": {
+      "table": {
+        "bigImg": "大图",
+        "description": "描述",
+        "title": "标题"
+      }
     }
   }
 }

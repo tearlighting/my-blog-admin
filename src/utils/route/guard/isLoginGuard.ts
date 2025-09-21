@@ -5,7 +5,7 @@ import type { IRouteGuarder } from "router"
  * @param next
  */
 export const isLoginGuard: IRouteGuarder = async ([to, _, routerNext], next) => {
-  if (to.name === "login") {
+  if (to.name === "login" || to.name === "waitingLogin") {
     routerNext()
   } else {
     next()
