@@ -1,6 +1,8 @@
+import type { IFlowMiddlewareHandler } from 'middleWare'
+
 // 泛型 T 用来传上下文类型，比如路由上下文、请求上下文等
 export class FlowMiddleware<T = any> {
-  private _stack: Array<(ctx: T, next: () => Promise<void>) => Promise<void> | void> = []
+  private _stack: Array<IFlowMiddlewareHandler<T>> = []
 
   use(fn: (ctx: T, next: () => Promise<void>) => Promise<void> | void) {
     this._stack.push(fn)

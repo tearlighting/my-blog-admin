@@ -33,7 +33,7 @@ export const themeManager = createThemeManager()
     labelKey: "theme.forest",
   })
 
-themeManager.setTheme("light")
+themeManager.setTheme("neon")
 export const useThemeStore = defineStore("theme", () => {
   const currentTheme = ref(themeManager.current)
   const themes = ref(themeManager.themes)

@@ -1,1 +1,1 @@
-export { useForm } from "./settings/formNew"
+export { useForm } from "./hooks/formNew"

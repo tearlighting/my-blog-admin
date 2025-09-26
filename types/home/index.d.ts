@@ -4,3 +4,5 @@ export interface IBannerItem {
   title: string
   description: string
 }
+
+export type TFormData = Omit<IBannerItem,'id'>

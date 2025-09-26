@@ -29,7 +29,14 @@ function createRequest({ baseURL, timeout = 5000 }: AxiosRequestConfig = {}) {
     const defaultConfig: AxiosRequestConfig = {
       headers: {},
     }
-    return instance({ ...defaultConfig, ...config }) as Promise<IResponse<T>>
+    try {
+      return instance({ ...defaultConfig, ...config }).catch((e) => {
+        hideLoading()
+        throw e
+      }) as any as Promise<IResponse<T>>
+    } catch (err) {
+      return Promise.reject(err)
+    }
   }
 
   return { request }

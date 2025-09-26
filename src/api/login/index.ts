@@ -28,4 +28,5 @@ export const whoAmI = async () => {
     method: "get",
     withCredentials: true,
   })
+  
 }

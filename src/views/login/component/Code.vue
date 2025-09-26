@@ -3,7 +3,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { ElInput } from "element-plus"
 import type { I18nResolveCxt, IFormTemplateItem } from "templifyFormNew";
 import { getCaptcha } from "@/api";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 interface Props {
 	item: IFormTemplateItem<any, I18nResolveCxt, any>
 	formData: any
@@ -20,8 +20,9 @@ const getCode = () => {
 		img.value = URL.createObjectURL(new Blob([uint8], { type: 'image/svg+xml' }))
 	}).catch(e => console.log(e))
 }
-
-getCode()
+onMounted(() => {
+	getCode()
+})
 
 
 </script>

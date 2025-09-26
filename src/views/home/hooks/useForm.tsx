@@ -2,9 +2,10 @@ import { ETemplateType, stringEnumTransform } from "@/utils"
 import { EHomeTableProps } from "../constants"
 import { createUseTemplifyFormWithI18nResolvor } from "@/hooks/useTemplifyFormNew"
 import z from "zod"
+import type { IBannerItem } from "home"
 const { props } = stringEnumTransform(EHomeTableProps)
 
-export const useForm = createUseTemplifyFormWithI18nResolvor({
+export const useFormRaw = createUseTemplifyFormWithI18nResolvor({
   formTemplatePayload: {
     props,
     labels: {
@@ -25,3 +26,24 @@ export const useForm = createUseTemplifyFormWithI18nResolvor({
     },
   },
 })
+
+export const useForm = () => {
+  const store = useFormRaw()
+  const extraData = {
+    current: null as Omit<IBannerItem, keyof typeof store.formData> | null,
+  }
+  function reset(row?: IBannerItem) {
+    const { bigImg, title, description, ...extras } = row || {}
+    extraData.current = extras as any
+    store.reset({
+      title,
+      description,
+      bigImg,
+    })
+  }
+  return {
+    ...store,
+    reset,
+    extraData,
+  }
+}

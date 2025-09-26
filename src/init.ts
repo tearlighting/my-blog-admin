@@ -3,6 +3,7 @@ import { useRouteStoreHook, useTagViewStoreHook, themeManager, useUserStoreHook,
 import { setupRouteGuard } from "./router/behavior"
 import { EDeviceType, ELoginStatus, EPemission } from "./constants"
 import { whoAmI } from "./api"
+import router from "./router"
 
 export interface IAllStoreProps {
   userStore: ReturnType<typeof useUserStoreHook>
@@ -55,6 +56,9 @@ function autoLogin<T extends IAllStoreProps>({ userStore }: T) {
     role: EPemission.visitor,
     loginStatus: ELoginStatus.logining,
   })
+  router.isReady().then(() => {
+    router.push({ name: "waitingLogin" })
+  })
   whoAmI()
     .then((res) => {
       if (res.msg) throw new Error(res.msg)
@@ -66,6 +70,7 @@ function autoLogin<T extends IAllStoreProps>({ userStore }: T) {
       })
     })
     .catch((err) => {
+      console.log(err)
       userStore.setUserInfo({
         role: EPemission.visitor,
         loginStatus: ELoginStatus.unlogin,

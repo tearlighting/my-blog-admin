@@ -1,6 +1,10 @@
 export enum EHomeTableProps {
   bigImg = "bigImg",
-  //   id = "id",
   title = "title",
   description = "description",
+}
+
+export enum EFormSubmitMode {
+  create = "create",
+  update = "update",
 }

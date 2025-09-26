@@ -23,8 +23,8 @@ const { t } = useLanguage()
 
 <template>
 
-	<div role="templify-table">
-		<el-table :data="data" border stripe>
+	<div role="templify-table" class="size-full">
+		<el-table :data="data" border stripe class-name="h-full!">
 			<el-table-column v-for="item in template" :key="item.prop" :prop="item.prop"
 				:label="item.label.resolve({ t })" align="center">
 				<template #default="scope">
