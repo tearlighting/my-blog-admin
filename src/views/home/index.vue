@@ -4,13 +4,15 @@ import EditForm from "./component/EditForm.vue"
 import { ElDialog } from "element-plus"
 import { useDialogStore } from "./store"
 import Controls from "./component/Controls.vue"
-
+defineOptions({
+	name: "home"
+})
 const { show } = useDialogStore()
 
 </script>
 
 <template>
-	<div role="home-container" class="size-full grid grid-rows-[10%_90%] grid-cols-1 px-10">
+	<div role="home-container" class="size-full grid grid-rows-[10%_90%] grid-cols-1 px-10 py-5">
 		<header class="size-full">
 			<Controls></Controls>
 		</header>

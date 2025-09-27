@@ -60,63 +60,7 @@ export const routes = createRoutes([
   //       },
   //     ],
   //   },
-  //   {
-  //     path: "/level",
-  //     component: DefaultLayout,
-  //     redirect: "/level/menu1/menu1-1/menu1-1-1",
-  //     name: "Level",
-  //     meta: {
-  //       titleKey: "router.level",
-  //       icon: EIcons.Home,
-  //       roles: [EPemission.visitor],
-  //     },
-  //     children: [
-  //       {
-  //         path: "Menu1",
-  //         name: "Menu1",
-  //         redirect: "/level/menu1/menu1-1/menu1-1-1",
-  //         meta: {
-  //           titleKey: "router.level.menu1",
-  //           roles: [EPemission.visitor],
-  //           icon: EIcons.MenuOpen,
-  //         },
-  //         children: [
-  //           {
-  //             path: "menu1-1",
-  //             name: "Menu11",
-  //             redirect: "/level/menu1/menu1-1/menu1-1-1",
-  //             meta: {
-  //               // title: t("router.level.menu1.menu11"),
-  //               titleKey: "router.level.menu1.menu11",
-  //               roles: [EPemission.visitor],
-  //             },
-  //             children: [
-  //               {
-  //                 path: "menu1-1-1",
-  //                 name: "Menu111",
-  //                 component: () => import("@/views/menu/menu111/index.vue"),
-  //                 meta: {
-  //                   // title: t("router.level.menu1.menu11.menu111"),
-  //                   titleKey: "router.level.menu1.menu11.menu111",
-  //                   roles: [EPemission.visitor],
-  //                 },
-  //               },
-  //             ],
-  //           },
-  //           {
-  //             path: "menu1-2",
-  //             name: "Menu12",
-  //             component: () => import("@/views/menu/menu12/index.vue"),
-  //             meta: {
-  //               // title: t("router.level.menu1.menu12"),
-  //               titleKey: "router.level.menu1.menu12",
-  //               roles: [EPemission.visitor],
-  //             },
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
+
   {
     path: "/home",
     component: DefaultLayout,
@@ -135,6 +79,65 @@ export const routes = createRoutes([
           roles: [EPemission.user, EPemission.admin],
           icon: EIcons.Dashboard,
         },
+      },
+    ],
+  },
+  {
+    path: "/blog",
+    component: DefaultLayout,
+    redirect: {
+      name: "blogType",
+    },
+    name: "blog",
+    meta: {
+      titleKey: "router.blog",
+      icon: EIcons.Home,
+      roles: [EPemission.visitor, EPemission.user, EPemission.admin],
+    },
+    children: [
+      {
+        path: "type",
+        name: "blogType",
+        meta: {
+          titleKey: "router.blog.blogType",
+          roles: [EPemission.visitor, EPemission.user, EPemission.admin],
+          icon: EIcons.MenuOpen,
+        },
+        component: () => import("@/views/blog/blogType/index.vue"),
+        // children: [
+        //   {
+        //     path: "menu1-1",
+        //     name: "Menu11",
+        //     redirect: "/level/menu1/menu1-1/menu1-1-1",
+        //     meta: {
+        //       // title: t("router.level.menu1.menu11"),
+        //       titleKey: "router.level.menu1.menu11",
+        //       roles: [EPemission.visitor],
+        //     },
+        //     children: [
+        //       {
+        //         path: "menu1-1-1",
+        //         name: "Menu111",
+        //         component: () => import("@/views/menu/menu111/index.vue"),
+        //         meta: {
+        //           // title: t("router.level.menu1.menu11.menu111"),
+        //           titleKey: "router.level.menu1.menu11.menu111",
+        //           roles: [EPemission.visitor],
+        //         },
+        //       },
+        //     ],
+        //   },
+        //   {
+        //     path: "menu1-2",
+        //     name: "Menu12",
+        //     component: () => import("@/views/menu/menu12/index.vue"),
+        //     meta: {
+        //       // title: t("router.level.menu1.menu12"),
+        //       titleKey: "router.level.menu1.menu12",
+        //       roles: [EPemission.visitor],
+        //     },
+        //   },
+        // ],
       },
     ],
   },

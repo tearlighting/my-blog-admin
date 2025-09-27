@@ -16,6 +16,13 @@
     },
     "home": {
       "_": "首页"
+    },
+    "blog": {
+      "_": "blog",
+      "blogList": {},
+      "blogType": {
+        "_": "blogType"
+      }
     }
   },
   "theme": {
@@ -66,6 +73,17 @@
         "bigImg": "大图",
         "description": "描述",
         "title": "标题"
+      }
+    },
+    "blog": {
+      "_": "blog",
+      "blogList": {},
+      "blogType": {
+        "table": {
+          "name": "名称",
+          "articleCount": "文章数量",
+          "order": "序列"
+        }
       }
     }
   }

@@ -33,6 +33,8 @@ function filterAccessRoutes(routes: AppRoute[], pemission: EPemission): AppRoute
       res.push(currentRoute)
     }
   }
+  console.log(res)
+
   return res
 }
 
