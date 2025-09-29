@@ -14,4 +14,5 @@ export const enum EIcons {
   Plus = "ic:baseline-plus",
   Download = "material-symbols:download",
   ZoomIn = "fad:zoomin",
+  More = "ri:more-line",
 }

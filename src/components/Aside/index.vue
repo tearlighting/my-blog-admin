@@ -9,7 +9,6 @@ import { EDeviceType } from "@/constants"
 import { useMenu } from "@/hooks/useMenu"
 
 const { displayRoutes, currentRoute } = storeToRefs(useRouteStore())
-console.log(displayRoutes);
 
 const { push } = useRouter()
 const { isCollapse, isHidden } = storeToRefs(useMenuStore())

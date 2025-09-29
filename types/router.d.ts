@@ -14,7 +14,7 @@ type BaseMeta = {
 
 type TI18nSetting = { title: string; titleKey?: never } | { title?: never; titleKey: NestedKeys<typeof en> }
 
-type TRouteHidden = { hidden: true }
+type TRouteHidden = { hidden: true } & Partial<TI18nSetting>
 
 export type TRouteShow = { hidden?: false } & TI18nSetting
 

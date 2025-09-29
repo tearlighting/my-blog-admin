@@ -85,59 +85,64 @@ export const routes = createRoutes([
   {
     path: "/blog",
     component: DefaultLayout,
-    redirect: {
-      name: "blogType",
-    },
     name: "blog",
     meta: {
       titleKey: "router.blog",
-      icon: EIcons.Home,
-      roles: [EPemission.visitor, EPemission.user, EPemission.admin],
+      roles: [EPemission.user, EPemission.admin],
     },
     children: [
       {
         path: "type",
         name: "blogType",
         meta: {
+          //   keepAlive: true,
           titleKey: "router.blog.blogType",
-          roles: [EPemission.visitor, EPemission.user, EPemission.admin],
+          roles: [EPemission.user, EPemission.admin],
           icon: EIcons.MenuOpen,
         },
         component: () => import("@/views/blog/blogType/index.vue"),
-        // children: [
-        //   {
-        //     path: "menu1-1",
-        //     name: "Menu11",
-        //     redirect: "/level/menu1/menu1-1/menu1-1-1",
-        //     meta: {
-        //       // title: t("router.level.menu1.menu11"),
-        //       titleKey: "router.level.menu1.menu11",
-        //       roles: [EPemission.visitor],
-        //     },
-        //     children: [
-        //       {
-        //         path: "menu1-1-1",
-        //         name: "Menu111",
-        //         component: () => import("@/views/menu/menu111/index.vue"),
-        //         meta: {
-        //           // title: t("router.level.menu1.menu11.menu111"),
-        //           titleKey: "router.level.menu1.menu11.menu111",
-        //           roles: [EPemission.visitor],
-        //         },
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     path: "menu1-2",
-        //     name: "Menu12",
-        //     component: () => import("@/views/menu/menu12/index.vue"),
-        //     meta: {
-        //       // title: t("router.level.menu1.menu12"),
-        //       titleKey: "router.level.menu1.menu12",
-        //       roles: [EPemission.visitor],
-        //     },
-        //   },
-        // ],
+      },
+      {
+        path: "list",
+        name: "blogList",
+        component: () => import("@/views/blog/blogList/index.vue"),
+        meta: {
+          //   keepAlive: true,
+          titleKey: "router.blog.blogList",
+          roles: [EPemission.user, EPemission.admin],
+        },
+      },
+      {
+        path: "detail",
+        name: "blogDetail",
+        component: () => import("@/views/blog/blogDetail/index.vue"),
+        meta: {
+          //   keepAlive: true,
+          hidden: true,
+          titleKey: "router.blog.blogDetail",
+          roles: [EPemission.user, EPemission.admin],
+        },
+      },
+    ],
+  },
+  {
+    path: "/message",
+    component: DefaultLayout,
+    meta: {
+      hidden: true,
+      roles: [EPemission.user, EPemission.admin],
+    },
+    children: [
+      {
+        path: "",
+        name: "message",
+        component: () => import("@/views/message/index.vue"),
+        meta: {
+          //   keepAlive: true,
+          titleKey: "router.home",
+          roles: [EPemission.user, EPemission.admin],
+          icon: EIcons.Dashboard,
+        },
       },
     ],
   },

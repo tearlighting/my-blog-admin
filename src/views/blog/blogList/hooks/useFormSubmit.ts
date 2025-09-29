@@ -1,15 +1,15 @@
-import type { IBannerItem, TFormData } from "home"
+import type { IBlogItem, TBlogForm } from "blog"
 import { useFormModeStore } from "../store"
 import { createFlowMiddleware } from "@/utils"
 import type { UploadUserFile } from "element-plus"
-import { uploadImg as uploadImgApi, updateBanner, addBanner } from "@/api"
+import { uploadImg as uploadImgApi, uploadBlogItem, createBlogItem } from "@/api"
 import type { IFlowMiddlewareHandler } from "middleWare"
 import { EFormSubmitMode } from "../constants"
 
 interface ISumbitCtx {
-  formData: TFormData
+  formData: TBlogForm
   fileList: UploadUserFile[]
-  extras: Omit<IBannerItem, keyof TFormData>
+  extras: Omit<IBlogItem, Exclude<keyof TBlogForm, "">>
 }
 
 const uploadImg: IFlowMiddlewareHandler<ISumbitCtx> = async ({ fileList, formData }, next) => {
@@ -19,7 +19,7 @@ const uploadImg: IFlowMiddlewareHandler<ISumbitCtx> = async ({ fileList, formDat
     if (files.length) {
       const res = await uploadImgApi(files[0])
       if (res.msg) throw new Error(res.msg)
-      formData.bigImg = res.data.url
+      formData.thumb = res.data.url
     }
     await next()
   } catch (err) {
@@ -31,7 +31,8 @@ const updateForm: IFlowMiddlewareHandler<ISumbitCtx> = async ({ formData, extras
   const { formMode } = useFormModeStore()
   if (formMode.value === EFormSubmitMode.update) {
     try {
-      const res = await updateBanner({ ...formData, ...extras })
+      const { commentNumber, scanNumber, id } = extras
+      const res = await uploadBlogItem({ ...formData, scanNumber, commentNumber, id })
       if (res.msg) throw new Error(res.msg)
     } catch (err) {
       throw new Error("update form fail")
@@ -44,7 +45,7 @@ const addForm: IFlowMiddlewareHandler<ISumbitCtx> = async ({ formData }, next) =
   const { formMode } = useFormModeStore()
   if (formMode.value === EFormSubmitMode.create) {
     try {
-      const res = await addBanner(formData)
+      const res = await createBlogItem(formData)
       if (res.msg) throw new Error(res.msg)
     } catch (err) {
       throw new Error("add form fail")

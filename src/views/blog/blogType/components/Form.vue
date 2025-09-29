@@ -7,7 +7,8 @@ import { nextTick } from 'vue';
 import { EFormSubmitMode } from '../constants';
 
 
-const { formData, formTemplate, extraData } = useFormStore()
+const { formData, formTemplate, extraData, enableAutoValidate } = useFormStore()
+enableAutoValidate()
 const { hideDialog } = useDialogStore()
 const { requestRemoteData } = useTableStore()
 const { formMode } = useFormModeStore()

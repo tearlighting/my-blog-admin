@@ -8,31 +8,34 @@ import { usePageHostStore } from "@/store/pageHost"
 import { storeToRefs } from "pinia"
 import Settings from "@/components/Settings/index.vue"
 
+
+
 const { currentRoute } = useRouteStore()
 const { hostRef } = storeToRefs(usePageHostStore())
 const { allCachedTags } = storeToRefs(useTagViewStore())
+
 </script>
 
 <template>
-  <PanelContainer class="text-text/90 bg-bg">
-    <template v-slot:left>
-      <Aside></Aside>
-    </template>
-    <template v-slot:centerLine1>
-      <NavBar></NavBar>
-    </template>
-    <template v-slot:centerLine2>
-      <TagViews></TagViews>
-    </template>
-    <div role="page-host " class="size-full overflow-auto bg-bg text-text" ref="hostRef">
-      <RouterView #="{ Component }">
-        <KeepAlive :include="allCachedTags">
-          <component :is="Component" :key="currentRoute.name" />
-        </KeepAlive>
-      </RouterView>
-      <Settings class="fixed top-1/2 right-0 -translate-y-1/2"></Settings>
-    </div>
-  </PanelContainer>
+	<PanelContainer class="text-text/90 bg-bg">
+		<template v-slot:left>
+			<Aside></Aside>
+		</template>
+		<template v-slot:centerLine1>
+			<NavBar></NavBar>
+		</template>
+		<template v-slot:centerLine2>
+			<TagViews></TagViews>
+		</template>
+		<div role="page-host " class="size-full overflow-auto bg-bg text-text" ref="hostRef">
+			<RouterView #="{ Component }">
+				<KeepAlive :include="allCachedTags">
+					<component :is="Component" :key="currentRoute.name" />
+				</KeepAlive>
+			</RouterView>
+			<Settings class="fixed top-1/2 right-0 -translate-y-1/2"></Settings>
+		</div>
+	</PanelContainer>
 </template>
 
 <style lang="less" scoped></style>

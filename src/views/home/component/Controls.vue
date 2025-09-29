@@ -15,8 +15,8 @@ const handleCreate = () => {
 
 <template>
 
-	<div class="size-full flex justify-end items-center">
-		<el-button type="primary" size="large" class="mr-10" @click="handleCreate">create</el-button>
+	<div class="size-full flex justify-end items-center gap-10">
+		<el-button type="primary" size="large" @click="handleCreate">create</el-button>
 		<el-button type="primary" size="large" @click="requestRemoteData">refresh</el-button>
 	</div>
 

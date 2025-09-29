@@ -1,4 +1,5 @@
 import type { en } from "@/constants/locale"
+import type { languageManager } from "@/store"
 export type NestedKeys<T, P extends string = ""> =
   // 如果有 "_"，把自己算一个 key
   | ("_" extends keyof T ? (P extends "" ? never : P) : never)
@@ -21,5 +22,7 @@ export interface ILanguageManager {
   init(message: Record<string, any>, locale?: keyof typeof message): void
   t(key: TI18nKey): string
 }
+
+export type TLocale = Parameters<typeof languageManager.setLocale>[0]
 
 export type TI18nKey = NestedKeys<typeof en>

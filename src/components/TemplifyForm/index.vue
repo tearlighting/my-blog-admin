@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useLanguage } from "@/hooks/useLanguage"
 import { ETemplateType } from "@/utils"
-import { ElForm, ElInput } from "element-plus"
+import { ElForm, ElInput, ElFormItem, ElSelect, ElOption } from "element-plus"
 import type { IFormTemplateItem } from "templifyForm"
 
 interface ITemplifyFormProps<TProps extends string = string, TResolveCxt = any> {
@@ -39,8 +39,8 @@ const { t } = useLanguage()
 							<template v-else-if="item.type === ETemplateType.select">
 								<ElSelect size="large" v-model="formData[item.prop]"
 									:class="item.formItemContentClassName">
-									<ElOption v-for="option of item.option" :key="option.value" :label="option.label"
-										:value="option.value">
+									<ElOption v-for="option of item.option" :key="option.value"
+										:label="option.label.resolve({ t })" :value="option.value">
 									</ElOption>
 								</ElSelect>
 							</template>

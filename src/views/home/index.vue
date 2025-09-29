@@ -4,6 +4,7 @@ import EditForm from "./component/EditForm.vue"
 import { ElDialog } from "element-plus"
 import { useDialogStore } from "./store"
 import Controls from "./component/Controls.vue"
+
 defineOptions({
 	name: "home"
 })

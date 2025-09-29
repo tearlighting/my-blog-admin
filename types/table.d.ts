@@ -15,3 +15,10 @@ interface ITemplifyTableItem<TProp extends string, TResolveCtx extends any = any
   prop: TProp
   label: ResolvableValue<TResolveCtx>
 }
+
+type PaginationTable<T> = {
+  rows: T[]
+  total: number
+  page: number
+  limit: number
+}

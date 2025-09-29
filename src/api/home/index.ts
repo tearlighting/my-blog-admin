@@ -3,22 +3,10 @@ import type { IBannerItem, TFormData } from "home"
 
 export function getBanners() {
   return request<IBannerItem[]>({
-    url: "home/banner",
+    url: "/home/banner",
   })
 }
 
-export function uploadBannerImg(file: File) {
-  return request<{ url: string }>({
-    url: "/upload/imgs",
-    method: "post",
-    data: {
-      file,
-    },
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  })
-}
 function formatBannerItem(item: IBannerItem) {
   const { bigImg, ...others } = item
   return {

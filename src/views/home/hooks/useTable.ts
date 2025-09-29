@@ -4,6 +4,7 @@ import { EHomeTableProps } from "../constants"
 import type { IBannerItem } from "home"
 import { ref } from "vue"
 import { getBanners } from "@/api"
+import { createUseTableData } from "@/hooks/useTemplifyTableData"
 
 const { props } = stringEnumTransform(EHomeTableProps)
 
@@ -16,43 +17,21 @@ export const homeTableTemplate = createTableTemplateResolverI18n({
   },
 })
 
-export const useTable = () => {
-  const tableTemplate = homeTableTemplate
-  const tableData = ref<IBannerItem[]>([])
-
-  const getRowById = (id: string) => tableData.value.find((item) => item.id === id)
-
-  const deleteRow = (id: string) => {
-    const index = tableData.value.findIndex((item) => item.id === id)
-    if (index > -1) {
-      tableData.value.splice(index, 1)
-    }
-  }
-  const addRow = (row: IBannerItem) => {
-    tableData.value.unshift(row)
-  }
-  const updateRow = (row: Partial<IBannerItem>) => {
-    const index = tableData.value.findIndex((item) => item.id === row.id)
-    if (index > -1) {
-      tableData.value.splice(index, 1, { ...tableData.value[index], ...row })
-    }
-  }
-  const resetTableData = (payload: IBannerItem[] = []) => {
-    tableData.value = payload
-  }
-  const requestRemoteData = async () => {
+const useTableRow = createUseTableData<IBannerItem>({
+  request: () =>
     getBanners().then((res) => {
       if (res.msg) throw new Error(res.msg)
-      resetTableData(res.data)
-    })
-  }
+      return res.data
+    }),
+})
+export const useTable = () => {
+  const tableTemplate = homeTableTemplate
+  const { tableData, requestRemoteData, resetTableData, getTableRow } = useTableRow()
+  const getRowById = (id: string) => getTableRow((x) => x.id === id)!
   return {
     tableTemplate,
     tableData,
     getRowById,
-    deleteRow,
-    addRow,
-    updateRow,
     resetTableData,
     requestRemoteData,
   }

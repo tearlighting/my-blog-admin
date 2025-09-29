@@ -18,9 +18,14 @@
     },
     "blog": {
       "_": "blog",
-      "blogList": {},
+      "blogList": {
+        "_": "文章列表"
+      },
       "blogType": {
         "_": "blogType"
+      },
+      "blogDetail": {
+        "_": "文章详情"
       }
     }
   },
@@ -75,7 +80,16 @@
       }
     },
     "blog": {
-      "blogList": {},
+      "blogList": {
+        "table": {
+          "thumb": "缩略图",
+          "description": "描述",
+          "title": "标题",
+          "category": "分类",
+          "scanNumber": "浏览量",
+          "commentNumber": "评论数"
+        }
+      },
       "blogType": {
         "table": {
           "name": "名称",
