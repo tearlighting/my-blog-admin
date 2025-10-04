@@ -18,7 +18,8 @@
     "moduleResolution": "bundler",
     "paths": {
       "@/*": ["src/*"],
-      "*": ["types/*"]
+      "*": ["types/*"],
+      "@toast-ui/editor": ["./node_modules/@toast-ui/editor/types/index.d.ts"]
     },
     "types": ["unplugin-icons/types/vue3", "vue", "node"]
   },

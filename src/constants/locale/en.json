@@ -97,6 +97,13 @@
           "articleCount": "文章数量",
           "order": "序列"
         }
+      },
+      "blogDetail": {
+        "basicInfo": {
+          "language": "语言",
+          "title": "标题",
+          "description": "简介"
+        }
       }
     }
   }
