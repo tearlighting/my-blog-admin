@@ -15,8 +15,6 @@ const { showDialog } = useDialogStore()
 const { setFormMode } = useFormModeStore()
 
 onMounted(() => {
-	console.log("m");
-
 	requestRemoteData()
 })
 

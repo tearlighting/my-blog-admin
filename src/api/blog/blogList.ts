@@ -1,13 +1,11 @@
 import request from "@/utils/request"
 import type { IBlogItem } from "blog"
-import type { TLocale } from "language"
 import type { PaginationTable } from "table"
 
 interface IGetBlogItemsProps {
   limit: number
   page: number
   id?: number
-  type?: TLocale
 }
 export const getBlogItems = ({ limit, page, id = -1 }: IGetBlogItemsProps) => {
   return request<PaginationTable<IBlogItem>>({

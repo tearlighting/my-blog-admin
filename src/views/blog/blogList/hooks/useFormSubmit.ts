@@ -5,6 +5,7 @@ import type { UploadUserFile } from "element-plus"
 import { uploadImg as uploadImgApi, uploadBlogItem, createBlogItem } from "@/api"
 import type { IFlowMiddlewareHandler } from "middleWare"
 import { EFormSubmitMode } from "../constants"
+import { removeSiteBaseFromUrl } from "@/utils/resource"
 
 interface ISumbitCtx {
   formData: TBlogForm
@@ -25,6 +26,11 @@ const uploadImg: IFlowMiddlewareHandler<ISumbitCtx> = async ({ fileList, formDat
   } catch (err) {
     throw new Error("upload img fail")
   }
+}
+
+const handleResouce: IFlowMiddlewareHandler<ISumbitCtx> = async ({ formData }, next) => {
+  formData.thumb = removeSiteBaseFromUrl(formData.thumb)
+  await next()
 }
 
 const updateForm: IFlowMiddlewareHandler<ISumbitCtx> = async ({ formData, extras }, next) => {
@@ -54,7 +60,7 @@ const addForm: IFlowMiddlewareHandler<ISumbitCtx> = async ({ formData }, next) =
   await next()
 }
 
-const sumbitMiddleware = createFlowMiddleware<ISumbitCtx>().use(uploadImg).use(updateForm).use(addForm)
+const sumbitMiddleware = createFlowMiddleware<ISumbitCtx>().use(uploadImg).use(handleResouce).use(updateForm).use(addForm)
 
 export const useFormSubmit = () => {
   const sumbit = (ctx: ISumbitCtx) => {

@@ -1,16 +1,16 @@
-import type { IBannerItem, TFormData } from "home"
+import type { IProjectItem, TProjectForm } from "project"
 import { useFormModeStore } from "../store"
 import { createFlowMiddleware } from "@/utils"
 import type { UploadUserFile } from "element-plus"
-import { uploadImg as uploadImgApi, updateBanner, addBanner } from "@/api"
+import { uploadImg as uploadImgApi, uploadProjectItem, createProjectItem } from "@/api"
 import type { IFlowMiddlewareHandler } from "middleWare"
 import { EFormSubmitMode } from "../constants"
 import { removeSiteBaseFromUrl } from "@/utils/resource"
 
 interface ISumbitCtx {
-  formData: TFormData
+  formData: TProjectForm
   fileList: UploadUserFile[]
-  extras: Omit<IBannerItem, keyof TFormData>
+  extras: Omit<IProjectItem, Exclude<keyof TProjectForm, "">>
 }
 
 const uploadImg: IFlowMiddlewareHandler<ISumbitCtx> = async ({ fileList, formData }, next) => {
@@ -20,7 +20,7 @@ const uploadImg: IFlowMiddlewareHandler<ISumbitCtx> = async ({ fileList, formDat
     if (files.length) {
       const res = await uploadImgApi(files[0])
       if (res.msg) throw new Error(res.msg)
-      formData.bigImg = res.data.url
+      formData.thumb = res.data.url
     }
     await next()
   } catch (err) {
@@ -29,14 +29,16 @@ const uploadImg: IFlowMiddlewareHandler<ISumbitCtx> = async ({ fileList, formDat
 }
 
 const handleResouce: IFlowMiddlewareHandler<ISumbitCtx> = async ({ formData }, next) => {
-  formData.bigImg = removeSiteBaseFromUrl(formData.bigImg)
+  formData.thumb = removeSiteBaseFromUrl(formData.thumb)
   await next()
 }
+
 const updateForm: IFlowMiddlewareHandler<ISumbitCtx> = async ({ formData, extras }, next) => {
   const { formMode } = useFormModeStore()
   if (formMode.value === EFormSubmitMode.update) {
     try {
-      const res = await updateBanner({ ...formData, ...extras })
+      const { commentNumber, scanNumber, id } = extras
+      const res = await uploadProjectItem({ ...formData, scanNumber, commentNumber, id })
       if (res.msg) throw new Error(res.msg)
     } catch (err) {
       throw new Error("update form fail")
@@ -49,7 +51,7 @@ const addForm: IFlowMiddlewareHandler<ISumbitCtx> = async ({ formData }, next) =
   const { formMode } = useFormModeStore()
   if (formMode.value === EFormSubmitMode.create) {
     try {
-      const res = await addBanner(formData)
+      const res = await createProjectItem(formData)
       if (res.msg) throw new Error(res.msg)
     } catch (err) {
       throw new Error("add form fail")

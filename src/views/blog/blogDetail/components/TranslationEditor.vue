@@ -9,11 +9,11 @@ import { useCurrentStore } from '../store';
 import { computed, onMounted, ref, watchEffect } from 'vue';
 import 'prismjs/themes/prism.css';
 import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import { ElButton, ElMessage } from 'element-plus'
+import { useSubmit } from "../hooks";
 
-import { ElButton } from 'element-plus'
 
-
-const { currentTranslation } = useCurrentStore()
+const { currentTranslation, currrentLang, blogId } = useCurrentStore()
 const htmlContent = computed({
 	get: () => currentTranslation.value?.htmlContent!,
 	set: (value) => currentTranslation.value!.htmlContent = value
@@ -27,16 +27,31 @@ onMounted(() => {
 		el: editorRef.value!,
 		height: '650px',
 		previewStyle: 'vertical',
-		plugins: [colorSyntax, codeSyntaxHighlight, tableMergedCell, uml, chart]
+		plugins: [colorSyntax, codeSyntaxHighlight, tableMergedCell, uml, chart],
+
 	})
+	editor.setScrollTop(0)
 	watchEffect(() => {
 		editor.setHTML(htmlContent.value)
 	})
 })
 
-function test() {
-	console.log(editor.getMarkdown());
-
+const { sumbit } = useSubmit()
+function submitMd() {
+	sumbit({
+		payload: {
+			blogId: blogId.value!,
+			lang: currrentLang.value,
+			markdownContent: editor.getMarkdown(),
+			id: currentTranslation.value?.id,
+			title: currentTranslation.value!.title,
+			description: currentTranslation.value!.description,
+		}
+	}).then(() => {
+		ElMessage.success('submit success')
+	}).catch(() => {
+		ElMessage.error('submit failed')
+	})
 }
 
 
@@ -49,8 +64,7 @@ function test() {
 		</div>
 	</div>
 	<div class="mt-10 flex justify-center items-center">
-		<ElButton type="primary" @click="test" size="large">提交</ElButton>
-
+		<ElButton type="primary" @click="submitMd" size="large">提交</ElButton>
 	</div>
 
 </template>

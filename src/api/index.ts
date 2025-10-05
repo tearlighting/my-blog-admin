@@ -1,4 +1,5 @@
-export * from "./login"
-export * from "./home"
 export * from "./blog"
+export * from "./home"
+export * from "./login"
+export * from "./project"
 export * from "./upload"

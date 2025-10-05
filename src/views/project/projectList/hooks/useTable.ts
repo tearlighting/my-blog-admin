@@ -1,21 +1,20 @@
 import { stringEnumTransform } from "@/utils/templifyFormNew"
-import { EBlogItem } from "../constants"
+import { EProjectItem } from "../constants"
 import { createTableTemplateResolverI18n } from "@/utils/table"
 import { createUseTableData } from "@/hooks/useTemplifyTableData"
-import { getBlogItems } from "@/api"
+import { getProjectItems } from "@/api"
 import { reactive } from "vue"
 import { addSiteBaseToUrl } from "@/utils/resource"
 
-const { props } = stringEnumTransform<Omit<typeof EBlogItem, "id">>(EBlogItem, (x: any) => x !== "id")
+const { props } = stringEnumTransform<Omit<typeof EProjectItem, "id">>(EProjectItem, (x: any) => x !== "id")
 const tableTemplate = createTableTemplateResolverI18n({
   props,
   labels: {
-    title: ({ t }) => t("views.blog.blogList.table.title"),
-    thumb: ({ t }) => t("views.blog.blogList.table.thumb"),
-    description: ({ t }) => t("views.blog.blogList.table.description"),
-    category: ({ t }) => t("views.blog.blogList.table.category"),
-    scanNumber: ({ t }) => t("views.blog.blogList.table.scanNumber"),
-    commentNumber: ({ t }) => t("views.blog.blogList.table.commentNumber"),
+    title: ({ t }) => t("views.project.projectList.table.title"),
+    thumb: ({ t }) => t("views.project.projectList.table.thumb"),
+    description: ({ t }) => t("views.project.projectList.table.description"),
+    scanNumber: ({ t }) => t("views.project.projectList.table.scanNumber"),
+    commentNumber: ({ t }) => t("views.project.projectList.table.commentNumber"),
   },
 })
 
@@ -26,11 +25,9 @@ export const usePaginationTable = () => {
     total: 0,
   })
   const request = async (blogTypeId?: number) => {
-    return getBlogItems({ ...paginationInfo, id: blogTypeId }).then((res) => {
-      //   console.log(res)
+    return getProjectItems({ ...paginationInfo, id: blogTypeId }).then((res) => {
       if (res.msg) throw new Error(res.msg)
       paginationInfo.total = res.data.total
-      //   console.log(res.data.rows)
       for (let item of res.data.rows) {
         item.thumb = addSiteBaseToUrl(item.thumb)
       }

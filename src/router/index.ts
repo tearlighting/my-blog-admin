@@ -146,6 +146,48 @@ export const routes = createRoutes([
       },
     ],
   },
+  {
+    path: "/project",
+    component: DefaultLayout,
+    name: "project",
+    meta: {
+      titleKey: "router.project",
+      roles: [EPemission.user, EPemission.admin],
+    },
+    children: [
+      {
+        path: "list",
+        name: "projectList",
+        meta: {
+          //   keepAlive: true,
+          titleKey: "router.project.projectList",
+          roles: [EPemission.user, EPemission.admin],
+          icon: EIcons.MenuOpen,
+        },
+        component: () => import("@/views/project/projectList/index.vue"),
+      },
+    ],
+  },
+  {
+    path: "/utils",
+    component: DefaultLayout,
+    meta: {
+      titleKey: "router.utils",
+      roles: [EPemission.user, EPemission.admin],
+    },
+    children: [
+      {
+        path: "imgupload",
+        name: "imgupload",
+        component: () => import("@/views/imgUploader/index.vue"),
+        meta: {
+          titleKey: "router.utils.imgupload",
+          roles: [EPemission.user, EPemission.admin],
+          icon: EIcons.Dashboard,
+        },
+      },
+    ],
+  },
 ])
 
 const router = createRouter({

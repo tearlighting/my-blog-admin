@@ -8,15 +8,15 @@ export const getBlogDetailById = (id: string) => {
   })
 }
 
-export const updateBlogTranslation = (data: Pick<IBlogTranslation, "id" | "toc" | "htmlContent" | "title" | "description">) => {
+export const updateBlogTranslation = (data: Pick<IBlogTranslation, "id" | "title" | "description"> & { markdownContent: string }) => {
   return request<IBlogItem>({
     url: "/blog/blogTranslation",
-    method: "POST",
+    method: "put",
     data,
   })
 }
 
-export const createBlogTranslation = (data: Pick<IBlogTranslation, "lang" | "blogId" | "toc" | "htmlContent" | "title" | "description">) => {
+export const createBlogTranslation = (data: Pick<IBlogTranslation, "lang" | "blogId" | "title" | "description"> & { markdownContent: string }) => {
   return request<IBlogItem>({
     url: "/blog/blogTranslation",
     method: "POST",

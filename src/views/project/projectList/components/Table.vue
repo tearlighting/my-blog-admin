@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import TemplifyTable from '@/components/TemplifyTable/index.vue'
 import { useDialogStore, useFormModeStore, useFormStore, useTableStore } from '../store';
-import type { IBlogItem } from 'blog';
+import type { IProjectItem } from 'project';
 import { nextTick, onMounted, } from 'vue';
 import { ElTableColumn, ElButton, ElImage, ElPagination, ElMessageBox, ElMessage } from 'element-plus'
 import SvgIcon from '@/components/SvgIcon/index.vue';
@@ -20,7 +20,7 @@ onMounted(() => {
 	requestRemoteData()
 })
 
-function getTranslationDefault(item: IBlogItem) {
+function getTranslationDefault(item: IProjectItem) {
 	const { currentLocale } = storeToRefs(useLanguageStore())
 	let target = item.translations.find(x => x.lang === currentLocale.value)
 	if (target) return target
@@ -57,10 +57,8 @@ function handleDelete(id: string) {
 }
 const router = useRouter()
 function handleToDetail(id: string) {
-	console.log("???", id);
-
 	router.push({
-		name: 'blogDetail',
+		name: 'projectDetail',
 		state: {
 			id
 		}
@@ -83,10 +81,6 @@ function handleToDetail(id: string) {
 				<template #description="{ value }">
 					{{ getTranslationDefault(value)?.description }}
 				</template>
-				<template #category="{ value }">
-					{{ (value as IBlogItem).category.name }}
-				</template>
-
 				<template #append>
 					<el-table-column align="center" width="200">
 						<template #default="scope">

@@ -1,14 +1,15 @@
-import { getBlogDetailById } from "@/api"
+import { getProjectDetailById } from "@/api"
 import { useLanguageStore } from "@/store"
 import { addSiteBase } from "@/utils/resource"
-import type { IBlogTranslation } from "blog"
+
 import type { TLocale } from "language"
+import type { IProjectTranslation } from "project"
 import { reactive } from "vue"
 
 const { languages } = useLanguageStore()
 
 export const useBlogDetail = () => {
-  const blogDetail = reactive<IBlogTranslation[]>(
+  const projectDetail = reactive<IProjectTranslation[]>(
     languages.map((item) => {
       return {
         lang: item.value,
@@ -16,17 +17,17 @@ export const useBlogDetail = () => {
         description: "",
         htmlContent: "",
         toc: "",
-        blogId: "",
+        projectId: "",
         id: "",
       }
     })
   )
 
-  const requestBlogDetail = async (blogId: string) => {
-    return await getBlogDetailById(blogId)
+  const requestProjectDetail = async (blogId: string) => {
+    return await getProjectDetailById(blogId)
       .then((res) => {
         if (res.msg) throw new Error(res.msg)
-        blogDetail.forEach((item, index, arr) => {
+        projectDetail.forEach((item, index, arr) => {
           const lang = item.lang
           const blog = res.data.translations.find((item) => item.lang === lang)
           if (blog) {
@@ -40,13 +41,13 @@ export const useBlogDetail = () => {
       })
   }
 
-  const getBlogTranslation = (lang: TLocale) => {
-    return blogDetail.find((item) => item.lang === lang)
+  const getProjectTranslation = (lang: TLocale) => {
+    return projectDetail.find((item) => item.lang === lang)
   }
 
   return {
-    blogDetail,
-    requestBlogDetail,
-    getBlogTranslation,
+    projectDetail,
+    requestProjectDetail,
+    getProjectTranslation,
   }
 }

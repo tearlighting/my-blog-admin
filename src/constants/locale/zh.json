@@ -27,6 +27,16 @@
       "blogDetail": {
         "_": "文章详情"
       }
+    },
+    "project": {
+      "_": "项目",
+      "projectList": {
+        "_": "项目列表"
+      }
+    },
+    "utils": {
+      "_": "工具",
+      "imgupload": "图片上传"
     }
   },
   "theme": {
@@ -102,6 +112,17 @@
           "language": "语言",
           "title": "标题",
           "description": "简介"
+        }
+      }
+    },
+    "project": {
+      "projectList": {
+        "table": {
+          "thumb": "缩略图",
+          "description": "描述",
+          "title": "标题",
+          "scanNumber": "浏览量",
+          "commentNumber": "评论数"
         }
       }
     }
