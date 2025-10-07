@@ -7,14 +7,13 @@ interface IGetBlogItemsProps {
   page: number
   id?: number
 }
-export const getBlogItems = ({ limit, page, id = -1 }: IGetBlogItemsProps) => {
+export const getBlogItems = ({ limit, page }: IGetBlogItemsProps) => {
   return request<PaginationTable<IBlogItem>>({
     url: "/blog",
     method: "get",
     params: {
       limit,
       page,
-      id,
     },
   })
 }

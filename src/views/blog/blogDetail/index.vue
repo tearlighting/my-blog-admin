@@ -16,12 +16,11 @@ const getId = () => {
 	return id
 }
 const { blogId, currrentLang, currentTranslation } = useCurrentStore()
-const { requestBlogDetail, getBlogTranslation, blogDetail } = useBlogDetailStore()
+const { requestBlogDetail, getBlogTranslation, } = useBlogDetailStore()
 blogId.value = getId()
 
 const init = async () => {
 	await requestBlogDetail(blogId.value!)
-	console.log(blogDetail);
 	currentTranslation.value = getBlogTranslation(currrentLang.value)!
 }
 init()

@@ -3,7 +3,7 @@ import { createFlowMiddleware } from "@/utils"
 import type { IBlogTranslation } from "blog"
 import type { IFlowMiddlewareHandler } from "middleWare"
 import { removeSiteBaseFromMd } from "@/utils/resource"
-
+import { useCurrentStore } from "../store"
 interface ISumbitCtx {
   payload: Pick<IBlogTranslation, "lang" | "title" | "description" | "blogId"> & { id?: string; markdownContent: string }
 }
@@ -23,7 +23,9 @@ const updateTranslation: IFlowMiddlewareHandler<ISumbitCtx> = async ({ payload }
 const createTranslation: IFlowMiddlewareHandler<ISumbitCtx> = async ({ payload }, next) => {
   if (!payload.id) {
     console.log("createTranslation")
-    await createBlogTranslation(payload)
+    const row = await createBlogTranslation(payload)
+    if (row.msg) throw new Error(row.msg)
+    useCurrentStore().currentTranslation.value!.id = row.data.id
   }
   await next()
 }

@@ -166,6 +166,18 @@ export const routes = createRoutes([
         },
         component: () => import("@/views/project/projectList/index.vue"),
       },
+      {
+        path: "list",
+        name: "projectDetail",
+        meta: {
+          //   keepAlive: true,
+          hidden: true,
+          titleKey: "router.project.projectDetail",
+          roles: [EPemission.user, EPemission.admin],
+          icon: EIcons.MenuOpen,
+        },
+        component: () => import("@/views/project/projectDetail/index.vue"),
+      },
     ],
   },
   {

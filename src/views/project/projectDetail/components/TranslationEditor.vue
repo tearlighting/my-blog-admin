@@ -18,53 +18,53 @@ import { useCurrentStore } from "../store"
 
 const { currentTranslation, currrentLang, projectId } = useCurrentStore()
 const htmlContent = computed({
-  get: () => currentTranslation.value?.htmlContent!,
-  set: (value) => (currentTranslation.value!.htmlContent = value),
+	get: () => currentTranslation.value?.htmlContent!,
+	set: (value) => (currentTranslation.value!.htmlContent = value),
 })
 
 const editorRef = ref<HTMLDivElement>()
 let editor: Editor
 onMounted(() => {
-  editor = new Editor({
-    el: editorRef.value!,
-    height: "650px",
-    previewStyle: "vertical",
-    plugins: [colorSyntax, codeSyntaxHighlight, tableMergedCell, uml, chart],
-  })
-  editor.setScrollTop(0)
-  watchEffect(() => {
-    editor.setHTML(htmlContent.value)
-  })
+	editor = new Editor({
+		el: editorRef.value!,
+		height: "650px",
+		previewStyle: "vertical",
+		plugins: [colorSyntax, codeSyntaxHighlight, tableMergedCell, uml, chart],
+	})
+	editor.setScrollTop(0)
+	watchEffect(() => {
+		editor.setHTML(htmlContent.value)
+	})
 })
 
 const { sumbit } = useSubmit()
 function submitMd() {
-  sumbit({
-    payload: {
-      projectId: projectId.value!,
-      lang: currrentLang.value,
-      markdownContent: editor.getMarkdown(),
-      id: currentTranslation.value?.id,
-      title: currentTranslation.value!.title,
-      description: currentTranslation.value!.description,
-    },
-  })
-    .then(() => {
-      ElMessage.success("submit success")
-    })
-    .catch(() => {
-      ElMessage.error("submit failed")
-    })
+	sumbit({
+		payload: {
+			projectId: projectId.value!,
+			lang: currrentLang.value,
+			markdownContent: editor.getMarkdown(),
+			id: currentTranslation.value?.id,
+			title: currentTranslation.value!.title,
+			description: currentTranslation.value!.description,
+		},
+	})
+		.then(() => {
+			ElMessage.success("submit success")
+		})
+		.catch(() => {
+			ElMessage.error("submit failed")
+		})
 }
 </script>
 
 <template>
-  <div class="size-full bg-gray-300">
-    <div class="not-tailwind">
-      <div ref="editorRef"></div>
-    </div>
-  </div>
-  <div class="mt-10 flex justify-center items-center">
-    <ElButton type="primary" @click="submitMd" size="large">提交</ElButton>
-  </div>
+	<div class="size-full bg-gray-300">
+		<div class="not-tailwind">
+			<div ref="editorRef"></div>
+		</div>
+	</div>
+	<div class="mt-10 flex justify-center items-center">
+		<ElButton type="primary" @click="submitMd" size="large">提交</ElButton>
+	</div>
 </template>

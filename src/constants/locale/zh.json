@@ -32,6 +32,9 @@
       "_": "项目",
       "projectList": {
         "_": "项目列表"
+      },
+      "projectDetail": {
+        "_": "项目详情"
       }
     },
     "utils": {

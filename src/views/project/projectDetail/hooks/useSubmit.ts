@@ -4,7 +4,7 @@ import type { IProjectTranslation } from "project"
 import { createProjectTranslation, updateProjectTranslation } from "@/api"
 import { createFlowMiddleware } from "@/utils"
 import { removeSiteBaseFromMd } from "@/utils/resource"
-
+import { useCurrentStore } from "../store"
 interface ISumbitCtx {
   payload: Pick<IProjectTranslation, "lang" | "title" | "description" | "projectId"> & { id?: string; markdownContent: string }
 }
@@ -14,6 +14,8 @@ const handleResouce: IFlowMiddlewareHandler<ISumbitCtx> = async ({ payload }, ne
 }
 
 const updateTranslation: IFlowMiddlewareHandler<ISumbitCtx> = async ({ payload }, next) => {
+  console.log(payload)
+
   if (payload.id) {
     console.log("updateTranslation")
     await updateProjectTranslation(payload as any)
@@ -23,7 +25,9 @@ const updateTranslation: IFlowMiddlewareHandler<ISumbitCtx> = async ({ payload }
 const createTranslation: IFlowMiddlewareHandler<ISumbitCtx> = async ({ payload }, next) => {
   if (!payload.id) {
     console.log("createTranslation")
-    await createProjectTranslation(payload)
+    const row = await createProjectTranslation(payload)
+    if (row.msg) throw new Error(row.msg)
+    useCurrentStore().currentTranslation.value!.id = row.data.id
   }
   await next()
 }

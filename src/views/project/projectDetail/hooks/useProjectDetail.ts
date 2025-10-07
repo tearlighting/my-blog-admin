@@ -30,10 +30,10 @@ export const useProjectDetail = () => {
         if (res.msg) throw new Error(res.msg)
         projectDetail.forEach((item, index, arr) => {
           const lang = item.lang
-          const blog = res.data.translations.find((item) => item.lang === lang)
-          if (blog) {
-            blog.htmlContent = addSiteBase(blog.htmlContent)
-            arr[index] = blog
+          const project = res.data.translations.find((item) => item.lang === lang)
+          if (project) {
+            project.htmlContent = addSiteBase(project.htmlContent)
+            arr[index] = project
           }
         })
       })
