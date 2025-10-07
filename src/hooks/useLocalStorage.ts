@@ -1,16 +1,13 @@
+import { LocalStorageManager } from "@/utils"
+
 export const useLocalStorage = <TKey extends string, TValue extends any>() => {
-  const getValue = (key: TKey) => {
-    const item = localStorage.getItem(key)
-    if (item) {
-      return JSON.parse(item) as TValue
-    }
-    return null
-  }
-  const setValue = (key: TKey, value: TValue) => {
-    localStorage.setItem(key, JSON.stringify(value))
-  }
+  const instance = LocalStorageManager.getInstance<TKey, TValue>()
+  const getValue = instance.getValue.bind(instance)
+  const setValue = instance.setValue.bind(instance)
+  const removeKey = instance.removeKey.bind(instance)
   return {
     getValue,
     setValue,
+    removeKey,
   }
 }

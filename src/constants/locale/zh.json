@@ -124,6 +124,13 @@
           "scanNumber": "浏览量",
           "commentNumber": "评论数"
         }
+      },
+      "projectDetail": {
+        "basicInfo": {
+          "language": "语言",
+          "title": "标题",
+          "description": "简介"
+        }
       }
     }
   }

@@ -1,14 +1,15 @@
+import { reactive } from "vue"
+
+import type { TLocale } from "language"
+import type { IProjectTranslation } from "project"
+
 import { getProjectDetailById } from "@/api"
 import { useLanguageStore } from "@/store"
 import { addSiteBase } from "@/utils/resource"
 
-import type { TLocale } from "language"
-import type { IProjectTranslation } from "project"
-import { reactive } from "vue"
-
 const { languages } = useLanguageStore()
 
-export const useBlogDetail = () => {
+export const useProjectDetail = () => {
   const projectDetail = reactive<IProjectTranslation[]>(
     languages.map((item) => {
       return {
