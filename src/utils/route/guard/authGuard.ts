@@ -15,17 +15,19 @@ export const createAuthGuard = <T extends ReturnType<typeof useUserStoreHook>, R
 
     // 未登录
     if (userStore.userInfo.loginStatus === ELoginStatus.unlogin) {
-      console.log("未登录")
-
+      //   console.log("未登录")
       routerNext({ name: "login" })
       return
     }
 
     // 登录中
     if (userStore.userInfo.loginStatus === ELoginStatus.logining) {
+      //   console.log("登录中")
+      console.log({ name: to.name as string, params: JSON.stringify(to.params) })
+
       routerNext({
         name: "waitingLogin",
-        params: { name: to.name as string, params: JSON.stringify(to.params) },
+        state: { name: to.name as string, params: JSON.stringify(to.params) },
       })
       return
     }

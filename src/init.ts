@@ -56,9 +56,9 @@ function autoLogin<T extends IAllStoreProps>({ userStore }: T) {
     role: EPemission.visitor,
     loginStatus: ELoginStatus.logining,
   })
-  router.isReady().then(() => {
-    router.push({ name: "waitingLogin" })
-  })
+  //   router.isReady().then(() => {
+  //     router.push({ name: "waitingLogin" })
+  //   })
   whoAmI()
     .then((res) => {
       if (res.msg) throw new Error(res.msg)

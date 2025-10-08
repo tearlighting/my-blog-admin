@@ -7,6 +7,7 @@ import { useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
 import { onMounted, watch, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 
 const { showLoading, hideLoading } = useLoadings()
 const { userInfo } = storeToRefs(useUserStore())
@@ -19,15 +20,16 @@ onMounted(() => {
 watch([() => userInfo.value.loginStatus], () => {
 
 	if (userInfo.value.loginStatus === ELoginStatus.logining) return
-	let name = "login"
+	const router = useRouter()
+	const { name: toName, params: toParams } = router.options.history.state;
+	const name = toName as string ?? 'home'
+	const params = JSON.parse(JSON.stringify(toParams ?? {}))
 
-	if ([EPemission.user, EPemission.admin].includes(userInfo.value.role)) {
-		name = "home"
-	}
 	nextTick(() => {
 		hideLoading()
 		router.push({
-			name
+			name,
+			params
 		})
 	})
 }, {
