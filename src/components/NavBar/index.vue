@@ -7,14 +7,16 @@ import ThemeSwitch from "./ThemeSwitch.vue"
 import UserAvatar from "./UserAvatar.vue"
 import { useAppStore } from "@/store/app"
 const {
-	settings: { },
+	settings,
 } = useAppStore()
 </script>
 
 <template>
-	<div class="flex items-center justify-between w-full relative border-b-1 border-b-border" role="nav-bar">
+	<div v-if="settings.showNavBar" class="flex items-center justify-between w-full relative border-b-1 border-b-border"
+		role="nav-bar">
 		<MenuSwitch />
 		<MenuTitle class="absolute left-1/2 -translate-x-1/2" />
+		<div class="flex-1"></div>
 		<div class="flex items-center md:gap-2">
 			<LocaleSwitch />
 			<ThemeSwitch />

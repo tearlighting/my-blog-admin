@@ -37,6 +37,9 @@
         "_": "projectDetail"
       }
     },
+    "message": {
+      "_": "消息"
+    },
     "utils": {
       "_": "tools",
 

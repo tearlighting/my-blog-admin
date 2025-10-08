@@ -12,7 +12,7 @@ export const routes = createRoutes([
   {
     path: "/",
     redirect: {
-      name: "login",
+      name: "home",
     },
     meta: {
       hidden: true,
@@ -139,7 +139,7 @@ export const routes = createRoutes([
         component: () => import("@/views/message/index.vue"),
         meta: {
           //   keepAlive: true,
-          titleKey: "router.home",
+          titleKey: "router.message",
           roles: [EPemission.user, EPemission.admin],
           icon: EIcons.Dashboard,
         },

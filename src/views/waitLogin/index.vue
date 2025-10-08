@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 
-import { ELoginStatus, EPemission } from '@/constants';
+import { ELoginStatus } from '@/constants';
 import { useLoadings } from '@/hooks/useLoadings';
-import router from '@/router';
+
 import { useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
@@ -21,11 +21,12 @@ watch([() => userInfo.value.loginStatus], () => {
 
 	if (userInfo.value.loginStatus === ELoginStatus.logining) return
 	const router = useRouter()
-	const { name: toName, params: toParams } = router.options.history.state;
-	const name = toName as string ?? 'home'
-	const params = JSON.parse(JSON.stringify(toParams ?? {}))
 
 	nextTick(() => {
+		const { name: toName, params: toParams } = router.options.history.state;
+		const name = toName as string ?? 'home'
+		const params = JSON.parse(JSON.stringify(toParams ?? {}))
+
 		hideLoading()
 		router.push({
 			name,
