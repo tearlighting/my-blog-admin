@@ -1,8 +1,20 @@
-import { darkPalette, lightPalette, pastelPalette, neonPalette, forestPalette } from "@/constants"
-import { createThemeManager } from "@/utils"
+import { ref, watchEffect } from "vue"
+
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import type { TTheme } from "theme"
+
+import { darkPalette, forestPalette, lightPalette, neonPalette, pastelPalette } from "@/constants"
+import { useLocalStorage } from "@/hooks/useLocalStorage"
+import { createThemeManager } from "@/utils"
+
 import pinia from "../store"
+
+const { getValue, setValue } = useLocalStorage<
+  "themeCache",
+  {
+    theme: TTheme
+  }
+>()
 
 export const themeManager = createThemeManager()
   .register({
@@ -33,7 +45,6 @@ export const themeManager = createThemeManager()
     labelKey: "theme.forest",
   })
 
-themeManager.setTheme("neon")
 export const useThemeStore = defineStore("theme", () => {
   const currentTheme = ref(themeManager.current)
   const themes = ref(themeManager.themes)
@@ -41,6 +52,14 @@ export const useThemeStore = defineStore("theme", () => {
     themeManager.setTheme(theme)
     currentTheme.value = theme
   }
+
+  themeManager.setTheme(getValue("themeCache")?.theme || "light")
+  watchEffect(() => {
+    setValue("themeCache", {
+      theme: currentTheme.value,
+    })
+  })
+
   return {
     currentTheme,
     themes,
