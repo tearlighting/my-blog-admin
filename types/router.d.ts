@@ -1,4 +1,4 @@
-import { NavigationGuardWithThis, RouteRecordRaw } from "vue-router"
+import { NavigationGuardWithThis, RouteRecordRaw, NavigationHookAfter } from "vue-router"
 import { EPemission } from "@/store/pemission"
 import type { EIcons } from "@/constants/icons"
 import type { en } from "@/constants/locale"
@@ -8,7 +8,6 @@ type BaseMeta = {
   keepAlive?: boolean
   roles: EPemission[]
   icon?: EIcons
-  exact?: boolean
   externalLink?: string
 }
 
@@ -30,4 +29,8 @@ export type AppRoute = Omit<RouteRecordRaw, "meta" | "children"> & {
 
 export interface IRouteGuarder {
   (routerPayload: Parameters<NavigationGuardWithThis<any>>, next: () => Promise<void>): void | Promise<void>
+}
+
+export interface IRouteAfter {
+  (routerPayload: Parameters<NavigationHookAfter>, next: () => Promise<void>): void | Promise<void>
 }

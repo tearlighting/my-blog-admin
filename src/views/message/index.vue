@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { ElInput } from 'element-plus'
 import { ref } from 'vue';
+defineOptions({
+	name: 'message'
+})
+
 const res = ref('')
 </script>
 

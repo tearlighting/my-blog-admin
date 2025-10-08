@@ -7,6 +7,9 @@ import { login } from "@/api"
 import { useUserStore } from "@/store"
 import { ELoginStatus, EPemission } from "@/constants"
 import router from "@/router"
+defineOptions({
+	name: "login"
+})
 const { formData, formTemplate, enableAutoValidate, isValid } = useForm()
 enableAutoValidate()
 const { t } = useLanguage()

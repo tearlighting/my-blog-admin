@@ -32,7 +32,7 @@ export const routes = createRoutes([
   {
     name: "waitingLogin",
     path: "/waitingLogin",
-    component: () => import("@/views/waitLogin/index.vue"),
+    component: () => import("@/views/waitingLogin/index.vue"),
     meta: {
       roles: [EPemission.visitor, EPemission.user, EPemission.admin],
       title: "waitingLogin",
@@ -95,7 +95,7 @@ export const routes = createRoutes([
         path: "type",
         name: "blogType",
         meta: {
-          //   keepAlive: true,
+          keepAlive: true,
           titleKey: "router.blog.blogType",
           roles: [EPemission.user, EPemission.admin],
           icon: EIcons.MenuOpen,
@@ -107,7 +107,7 @@ export const routes = createRoutes([
         name: "blogList",
         component: () => import("@/views/blog/blogList/index.vue"),
         meta: {
-          //   keepAlive: true,
+          keepAlive: true,
           titleKey: "router.blog.blogList",
           roles: [EPemission.user, EPemission.admin],
         },
@@ -117,7 +117,7 @@ export const routes = createRoutes([
         name: "blogDetail",
         component: () => import("@/views/blog/blogDetail/index.vue"),
         meta: {
-          //   keepAlive: true,
+          keepAlive: true,
           hidden: true,
           titleKey: "router.blog.blogDetail",
           roles: [EPemission.user, EPemission.admin],
@@ -191,7 +191,7 @@ export const routes = createRoutes([
       {
         path: "imgupload",
         name: "imgupload",
-        component: () => import("@/views/imgUploader/index.vue"),
+        component: () => import("@/views/utils/imgUploader/index.vue"),
         meta: {
           titleKey: "router.utils.imgupload",
           roles: [EPemission.user, EPemission.admin],

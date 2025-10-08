@@ -4,6 +4,9 @@ import ImgUploader from "@/components/ImgUploader/index.vue"
 import { useCopy } from "@/hooks/useCopy";
 import { ElInput, ElButton, type UploadUserFile } from "element-plus"
 import { ref } from "vue";
+defineOptions({
+	name: "imgupload"
+})
 const fileList = ref<UploadUserFile[]>([])
 const urlRef = ref<string>("")
 const { copy } = useCopy()

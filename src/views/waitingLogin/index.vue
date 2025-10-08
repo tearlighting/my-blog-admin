@@ -9,6 +9,10 @@ import { storeToRefs } from 'pinia';
 import { onMounted, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 
+defineOptions({
+	name: 'waitingLogin'
+})
+
 const { showLoading, hideLoading } = useLoadings()
 const { userInfo } = storeToRefs(useUserStore())
 
