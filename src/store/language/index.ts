@@ -34,12 +34,11 @@ const languageManagerCoreIns = createLanguageCore()
   })
 
 export const languageManager = createLanguageManagerGlue(languageManagerCoreIns, createLanguageManager)
-
+languageManagerCoreIns.setLocale(getValue("languageCache")?.locale || "zh")
 export const useLanguageStore = defineStore("language", () => {
   const currentLocale = ref(languageManager.currentLocale)
   const languages = ref(languageManager.languages)
 
-  languageManagerCoreIns.setLocale(getValue("languageCache")?.locale || "zh")
   watchEffect(() => {
     setValue("languageCache", {
       locale: currentLocale.value,

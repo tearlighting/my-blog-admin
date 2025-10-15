@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { ref, computed } from "vue"
+import { ref, computed, nextTick, watchEffect, reactive } from "vue"
 import router, { routes } from "@/router"
 import pinia from "../store"
 import { getMeta } from "@/utils"
@@ -16,9 +16,12 @@ export const useTagViewStore = defineStore("tagView", () => {
     return currentTagName.value === name
   }
   function addTag(name: string) {
-    tags.value.add(name)
-    const { keepAlive } = getMeta(routes, name)
-    keepAlive && cachedTags.value.add(name)
+    const { keepAlive, noTag } = getMeta(routes, name)
+
+    !noTag && tags.value.add(name)
+    nextTick(() => {
+      keepAlive && cachedTags.value.add(name)
+    })
   }
 
   function deleteTag(name: string) {
@@ -48,7 +51,12 @@ export const useTagViewStore = defineStore("tagView", () => {
 
   const allTags = computed(() => Array.from(tags.value))
 
-  const allCachedTags = computed(() => Array.from(cachedTags.value))
+  const allCachedTags = reactive<string[]>([])
+
+  watchEffect(() => {
+    allCachedTags.splice(0, allCachedTags.length, ...cachedTags.value)
+  })
+  //   const allCachedTags = computed(() => Array.from(cachedTags.value))
 
   return {
     addTag,

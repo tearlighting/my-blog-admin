@@ -44,7 +44,7 @@ export const themeManager = createThemeManager()
     palette: forestPalette,
     labelKey: "theme.forest",
   })
-
+themeManager.setTheme(getValue("themeCache")?.theme || "light")
 export const useThemeStore = defineStore("theme", () => {
   const currentTheme = ref(themeManager.current)
   const themes = ref(themeManager.themes)
@@ -53,7 +53,6 @@ export const useThemeStore = defineStore("theme", () => {
     currentTheme.value = theme
   }
 
-  themeManager.setTheme(getValue("themeCache")?.theme || "light")
   watchEffect(() => {
     setValue("themeCache", {
       theme: currentTheme.value,

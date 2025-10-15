@@ -1,5 +1,6 @@
 import type { en } from "@/constants/locale"
 import { NestedKeys } from "language"
+import type { themeManager } from "@/store/theme"
 export type ThemeVars = Record<string, string>
 
 export interface IThemeManager<ThemeName extends string> {
@@ -38,3 +39,5 @@ export type ThemeItem<TKey extends string> = {
   value: TKey
   palette: Palette
 } & ThemeLabel
+
+export type TTheme = typeof themeManager.current

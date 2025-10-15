@@ -3,16 +3,22 @@ import PanelContainer from "@/components/PanelContainer/index.vue"
 import Aside from "@/components/Aside/index.vue"
 import NavBar from "@/components/NavBar/index.vue"
 import TagViews from "@/components/TagViews/index.vue"
-import { useRouteStore, useTagViewStore } from "@/store"
+import { useTagViewStore } from "@/store"
 import { usePageHostStore } from "@/store/pageHost"
 import { storeToRefs } from "pinia"
 import Settings from "@/components/Settings/index.vue"
+import { watchEffect } from "vue"
 
 
 
-const { currentRoute } = useRouteStore()
+
 const { hostRef } = storeToRefs(usePageHostStore())
 const { allCachedTags } = storeToRefs(useTagViewStore())
+
+watchEffect(() => {
+	console.log(allCachedTags.value);
+})
+
 
 </script>
 
@@ -30,7 +36,7 @@ const { allCachedTags } = storeToRefs(useTagViewStore())
 		<div role="page-host " class="size-full overflow-auto bg-bg text-text" ref="hostRef">
 			<RouterView #="{ Component }">
 				<KeepAlive :include="allCachedTags">
-					<component :is="Component" :key="currentRoute.name" />
+					<component :is="Component" />
 				</KeepAlive>
 			</RouterView>
 			<Settings class="fixed top-1/2 right-0 -translate-y-1/2"></Settings>

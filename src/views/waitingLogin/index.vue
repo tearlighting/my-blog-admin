@@ -18,28 +18,29 @@ const { userInfo } = storeToRefs(useUserStore())
 
 onMounted(() => {
 	showLoading()
-})
+	watch([() => userInfo.value.loginStatus], () => {
 
+		if (userInfo.value.loginStatus === ELoginStatus.logining) return
+		const router = useRouter()
 
-watch([() => userInfo.value.loginStatus], () => {
+		nextTick(() => {
+			const { name: toName, params: toParams } = router.options.history.state;
+			const name = toName as string ?? 'home'
+			const params = JSON.parse(JSON.stringify(toParams ?? {}))
 
-	if (userInfo.value.loginStatus === ELoginStatus.logining) return
-	const router = useRouter()
-
-	nextTick(() => {
-		const { name: toName, params: toParams } = router.options.history.state;
-		const name = toName as string ?? 'home'
-		const params = JSON.parse(JSON.stringify(toParams ?? {}))
-
-		hideLoading()
-		router.push({
-			name,
-			params
+			hideLoading()
+			router.push({
+				name,
+				params
+			})
 		})
+	}, {
+		immediate: true
 	})
-}, {
-	immediate: true
 })
+
+
+
 
 
 </script>

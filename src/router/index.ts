@@ -16,6 +16,7 @@ export const routes = createRoutes([
     },
     meta: {
       hidden: true,
+      noTag: true,
       roles: [EPemission.visitor, EPemission.user, EPemission.admin],
     },
   },
@@ -25,8 +26,8 @@ export const routes = createRoutes([
     name: "login",
     meta: {
       roles: [EPemission.visitor, EPemission.user, EPemission.admin],
-      title: "login",
       hidden: true,
+      noTag: true,
     },
   },
   {
@@ -35,8 +36,8 @@ export const routes = createRoutes([
     component: () => import("@/views/waitingLogin/index.vue"),
     meta: {
       roles: [EPemission.visitor, EPemission.user, EPemission.admin],
-      title: "waitingLogin",
       hidden: true,
+      noTag: true,
     },
   },
   //   {
@@ -66,6 +67,7 @@ export const routes = createRoutes([
     component: DefaultLayout,
     meta: {
       hidden: true,
+      noTag: true,
       roles: [EPemission.user, EPemission.admin],
     },
     children: [
@@ -87,6 +89,7 @@ export const routes = createRoutes([
     component: DefaultLayout,
     name: "blog",
     meta: {
+      noTag: true,
       titleKey: "router.blog",
       roles: [EPemission.user, EPemission.admin],
     },
@@ -130,6 +133,7 @@ export const routes = createRoutes([
     component: DefaultLayout,
     meta: {
       hidden: true,
+      noTag: true,
       roles: [EPemission.user, EPemission.admin],
     },
     children: [
@@ -138,7 +142,7 @@ export const routes = createRoutes([
         name: "message",
         component: () => import("@/views/message/index.vue"),
         meta: {
-          //   keepAlive: true,
+          keepAlive: true,
           titleKey: "router.message",
           roles: [EPemission.user, EPemission.admin],
           icon: EIcons.Dashboard,
@@ -153,13 +157,14 @@ export const routes = createRoutes([
     meta: {
       titleKey: "router.project",
       roles: [EPemission.user, EPemission.admin],
+      noTag: true,
     },
     children: [
       {
         path: "list",
         name: "projectList",
         meta: {
-          //   keepAlive: true,
+          keepAlive: true,
           titleKey: "router.project.projectList",
           roles: [EPemission.user, EPemission.admin],
           icon: EIcons.MenuOpen,
@@ -170,7 +175,7 @@ export const routes = createRoutes([
         path: "list",
         name: "projectDetail",
         meta: {
-          //   keepAlive: true,
+          keepAlive: true,
           hidden: true,
           titleKey: "router.project.projectDetail",
           roles: [EPemission.user, EPemission.admin],
@@ -185,6 +190,7 @@ export const routes = createRoutes([
     component: DefaultLayout,
     meta: {
       titleKey: "router.utils",
+      noTag: true,
       roles: [EPemission.user, EPemission.admin],
     },
     children: [

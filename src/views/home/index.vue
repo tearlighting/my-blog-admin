@@ -4,12 +4,18 @@ import EditForm from "./component/EditForm.vue"
 import { ElDialog } from "element-plus"
 import { useDialogStore } from "./store"
 import Controls from "./component/Controls.vue"
+import { onActivated, onDeactivated, onMounted, onUnmounted } from "vue"
+import { useRoute } from "vue-router"
 
 defineOptions({
 	name: "home"
 })
 const { show } = useDialogStore()
-
+const route = useRoute()
+onMounted(() => console.log('mounted', route.name))
+onActivated(() => console.log('activated', route.name))
+onDeactivated(() => console.log('deactivated', route.name))
+onUnmounted(() => console.log('unmounted', route.name))
 </script>
 
 <template>

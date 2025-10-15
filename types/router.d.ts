@@ -4,20 +4,26 @@ import type { EIcons } from "@/constants/icons"
 import type { en } from "@/constants/locale"
 import { NestedKeys } from "language"
 
-type BaseMeta = {
+export type BaseMeta = {
   keepAlive?: boolean
   roles: EPemission[]
   icon?: EIcons
+  noTag?: boolean
+  hidden?: boolean
   externalLink?: string
 }
 
 type TI18nSetting = { title: string; titleKey?: never } | { title?: never; titleKey: NestedKeys<typeof en> }
 
-type TRouteHidden = { hidden: true } & Partial<TI18nSetting>
-
-export type TRouteShow = { hidden?: false } & TI18nSetting
-
-export type StrictMeta = BaseMeta & (TRouteHidden | TRouteShow)
+export type StrictMeta =
+  // 1️⃣ hidden=false | undefined, noTag=false | undefined → 需要标题
+  | (BaseMeta & { hidden?: false; noTag?: false } & TI18nSetting)
+  // 2️⃣ hidden=false | undefined, noTag=true → 需要标题
+  | (BaseMeta & { hidden?: false; noTag: true } & TI18nSetting)
+  // 3️⃣ hidden=true, noTag=false | undefined → 需要标题
+  | (BaseMeta & { hidden: true; noTag?: false } & TI18nSetting)
+  // 4️⃣ hidden=true, noTag=true → 不需要标题
+  | (BaseMeta & { hidden: true; noTag: true })
 
 export type AppRoute = Omit<RouteRecordRaw, "meta" | "children"> & {
   /**

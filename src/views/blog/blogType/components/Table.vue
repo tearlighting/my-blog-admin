@@ -6,7 +6,7 @@ import { nextTick, onMounted } from 'vue';
 import { EFormSubmitMode } from '../constants';
 import { deleteBlogType } from '@/api';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { useRoute } from 'vue-router';
+
 defineOptions({
 	name: 'BlogTypeTable'
 })
@@ -15,7 +15,6 @@ const { reset } = useFormStore()
 const { showDialog } = useDialogStore()
 const { setFormMode } = useFormModeStore()
 onMounted(() => {
-	console.log("onMounted blogTypeTable", useRoute().fullPath);
 	requestRemoteData()
 })
 const handleEdit = (id: string) => {
